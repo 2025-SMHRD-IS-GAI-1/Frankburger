@@ -6,6 +6,8 @@ public class ex01 {
 
 		System.out.println("난 팀장이다!");
 		
+		System.out.println("난 김태경이다!");
+		
 	}
 
 }
