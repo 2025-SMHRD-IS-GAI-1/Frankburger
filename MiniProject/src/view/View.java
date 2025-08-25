@@ -14,7 +14,18 @@ public class View {
 
 	// 1. 필드
 	private Scanner sc = new Scanner(System.in);
-	private String[][] map = new String[10][10];
+	private String[][] map = {
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", "F", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", "S", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+        };
 
 	// 2. 메서드
 	// 메뉴 보여주는 메서드
@@ -101,14 +112,30 @@ public class View {
 	}
 
 	// 맵 출력
-	public void printMap() {
-
+	public void printMap(MemberVO mvo) {
+		for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+            	if(map[i][j].equals("S")) {
+            		System.out.print("🏪");
+            	} else if(map[i][j].equals("F")) {
+            		System.out.print("🎣");
+            	} else if(i == mvo.getX() && j == mvo.getY()) {
+            		System.out.print("🧍");
+            	} else {
+            		System.out.print("⬜");
+            	}
+                
+            }
+            System.out.println();
+        }
 	}
 
-	// 상태 출력
-	public void printStatus() {
-
-	}
+	//상태 출력
+    public void printStatus(MemberVO mvo) {
+        System.out.println("  점 수 : "+ mvo.getPoint());
+        System.out.println("  골 드 : " + mvo.getGold());
+        System.out.println("  미 끼 : " + mvo.getBait());
+     }
 
 	// 미끼 사기 출력
 	public int buybait() {
@@ -351,6 +378,19 @@ public class View {
 		map.put("성공실패", isSuccess);
 				
 		return map;
+	}
+
+	public String eventStart(int x, int y) {
+		// TODO Auto-generated method stub
+		String result = null;
+		
+		if(map[x][y].equals("S")) {
+			result = "상점";
+		} else if(map[x][y].equals("F")) {
+			result = "낚시터";
+		}
+		
+		return result;
 	}
 
 }
