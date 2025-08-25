@@ -3,7 +3,7 @@ package controller;
 import java.util.ArrayList;
 
 import model.DAO;
-import model.UserVO;
+import model.MemberVO;
 import view.View;
 
 public class Controller {
@@ -38,7 +38,7 @@ public class Controller {
 			// 메뉴 출력
 			int input = view.showMenu();
 			if (input == 1) {
-				UserVO loginVO = dao.login(view.showLogin());
+				MemberVO loginVO = dao.login(view.showLogin());
 				view.statusLogin(loginVO);
 
 				if (loginVO != null) {

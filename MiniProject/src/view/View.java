@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import model.RodVO;
-import model.UserVO;
+import model.MemberVO;
 
 // View 역할 : 입출력 담당
 public class View {
@@ -40,20 +40,20 @@ public class View {
 	}
 
 	// 로그인 출력하는 메서드
-	public UserVO showLogin() {
+	public MemberVO showLogin() {
 		System.out.println("==== 로그인 ====");
 		System.out.print("ID 입력 : ");
 		String id = sc.next();
 		System.out.print("비밀번호 입력 : ");
 		String pw = sc.next();
 
-		UserVO mvo = new UserVO(); 
+		MemberVO mvo = new MemberVO(); 
 		return mvo;
 
 	}
 
 	// 로그인 성공 여부 출력하는 메서드
-	public void statusLogin(UserVO loginVO) {
+	public void statusLogin(MemberVO loginVO) {
 		if (loginVO != null) {
 			System.out.println("로그인 성공");
 			// loginVO
@@ -64,7 +64,7 @@ public class View {
 	}
 
 	// 회원가입 출력하는 메서드
-	public UserVO showJoin() {
+	public MemberVO showJoin() {
 		System.out.println("==== 회원가입 ====");
 		System.out.print("ID 입력 : ");
 		String id = sc.next();
@@ -75,7 +75,7 @@ public class View {
 		System.out.println("나이 입력 : ");
 		int age = sc.nextInt();
 
-		UserVO mvo = new UserVO();
+		MemberVO mvo = new MemberVO();
 		
 		return mvo;
 	}
@@ -108,7 +108,7 @@ public class View {
 	}
 	
 	// 낚시하기 
-	public void fishing(UserVO loginVO) {
+	public void fishing(MemberVO loginVO) {
 		
 	}
 	

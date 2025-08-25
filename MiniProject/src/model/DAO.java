@@ -21,9 +21,9 @@ public class DAO {
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			String user = "HR";
-			String password = "hr";
+			String url = "jdbc:oracle:thin:@project-db-cgi.smhrd.com:1524:xe";
+			String user = "CGI_25IS_GA_P1_3";
+			String password = "smhrd3";
 
 			conn = DriverManager.getConnection(url, user, password);
 			// conn : Java와 DB 사이의 통로를 열어줌
@@ -55,9 +55,9 @@ public class DAO {
 
 	// 1. 로그인 메서드 생성
 	// 매개변수를 VO 자체로 넣어버리면 일일이 집어넣을 필요 x
-	public UserVO login(UserVO mvo) {
+	public MemberVO login(MemberVO mvo) {
 		// 로그인 한 사용자의 비밀번호를 뺀 나머지 모든 정보 리턴
-		UserVO loginVO = null;
+		MemberVO loginVO = null;
 
 		try {
 			getConn();
@@ -85,7 +85,7 @@ public class DAO {
 	}
 
 	// 회원가입 메소드
-	public int join(UserVO mvo) {
+	public int join(MemberVO mvo) {
 
 		int row = 0;
 
