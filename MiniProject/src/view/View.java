@@ -249,12 +249,11 @@ public class View {
         	targetEnd = 7;
         }
 
-        System.out.println("=== 엔터 입력으로 타이밍 맞추기 ===");
-
         while (true) {
             // 바 그리기
         	
-        	StringBuilder sb = new StringBuilder("");
+        	StringBuilder sb = new StringBuilder("=== 엔터 입력으로 타이밍 맞추기 ===");
+        	sb.append("\n");
         	for (int i = 0; i < barLength; i++) {
         	    if (i == middlePoint) sb.append("↓");
         	    else sb.append(" ");
