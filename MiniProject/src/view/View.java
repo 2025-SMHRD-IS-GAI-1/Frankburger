@@ -203,24 +203,24 @@ public class View {
 	public void getFishingSpotInfo() {
 		System.out.println("물고기 등장 확률");
 		System.out.println("┌──────┬────────┐");
-		System.out.println("│ 크기  │ 확률     │");
+		System.out.println("│ Size │ Chance │");
 		System.out.println("├──────┼────────┤");
-		System.out.println("│ 2짜   │ 40%    │");
-		System.out.println("│ 3짜   │ 30%    │");
-		System.out.println("│ 4짜   │ 20%    │");
-		System.out.println("│ 런커   │ 10%    │");
+		System.out.println("│ S    │ 40%    │");
+		System.out.println("│ M    │ 30%    │");
+		System.out.println("│ L    │ 20%    │");
+		System.out.println("│ Boss │ 10%    │");
 		System.out.println("└──────┴────────┘");
 
 		System.out.println();
 		System.out.println("낚을 확률");
 		System.out.println("┌──────┬──────────┬────────┬──────────┐");
-		System.out.println("│ 크기   │ 낚을확률   │ 점수    │ 획득머니    │");
+		System.out.println("│ Size │ Catch %  │ Score  │ Earned W │");
 		System.out.println("├──────┼──────────┼────────┼──────────┤");
-		System.out.println("│ 2짜   │ 100%    │ 10점    │ 100원     │");
-		System.out.println("│ 3짜   │ 50%     │ 25점    │ 120원     │");
-		System.out.println("│ 4짜   │ 25%     │ 60점    │ 150원     │");
-		System.out.println("│ 런커   │ 10%     │ 500점   │ 5000원    │");
-		System.out.println("└──────┴──────────┴────────┴──────────┘");	
+		System.out.println("│ S    │ 100%     │ 10 pts │ W1.00    │");
+		System.out.println("│ M    │ 50%      │ 25 pts │ W1.20    │");
+		System.out.println("│ L    │ 25%      │ 60 pts │ W1.50    │");
+		System.out.println("│ Boss │ 10%      │ 500 pts│ W50.00   │");
+		System.out.println("└──────┴──────────┴────────┴──────────┘");
 	}
 
 	public void alertBuyBait() {
@@ -391,6 +391,11 @@ public class View {
 		}
 		
 		return result;
+	}
+
+	public void showLoginFail() {
+		System.out.println("로그인이 안되었습니다. 아이디와 비밀번호를 확인해주세요.");
+		
 	}
 
 }
