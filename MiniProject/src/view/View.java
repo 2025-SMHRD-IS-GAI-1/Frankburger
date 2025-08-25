@@ -1,6 +1,9 @@
 package view;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 import model.MemberVO;
@@ -34,7 +37,7 @@ public class View {
 	}
 
 	public int showMenu4() {
-		System.out.print("[1]낚시하기 [2]종료 >>");
+		System.out.print("[1]낚시하기 [2]확률보기 [3]종료 >>");
 		int input = sc.nextInt();
 		return input;
 	}
@@ -155,6 +158,199 @@ public class View {
 			System.out.println("다이아몬들 낚시대를 구매하셨습니다");
 			System.out.println("10000골드를 사용하셨습니다");
 		}else{System.out.println("번호를 잘못 입력하셨습니다");}
+	}
+
+	public void fishingSuccess(String fishSizeName) {
+		System.out.println(fishSizeName + " 낚시에 성공하셨습니다.");
+		
+	}
+
+	public void fishingFail(String fishSizeName) {
+		System.out.println(fishSizeName + " 낚시에 실패하셨습니다.");
+	}
+
+	public void hitFail() {
+		System.out.println("찌 맞추기에 실패하셨습니다.");
+	}
+
+	public void getFishingSpotInfo() {
+		System.out.println("물고기 등장 확률");
+		System.out.println("┌──────┬────────┐");
+		System.out.println("│ 크기  │ 확률     │");
+		System.out.println("├──────┼────────┤");
+		System.out.println("│ 2짜   │ 40%    │");
+		System.out.println("│ 3짜   │ 30%    │");
+		System.out.println("│ 4짜   │ 20%    │");
+		System.out.println("│ 런커   │ 10%    │");
+		System.out.println("└──────┴────────┘");
+
+		System.out.println();
+		System.out.println("낚을 확률");
+		System.out.println("┌──────┬──────────┬────────┬──────────┐");
+		System.out.println("│ 크기   │ 낚을확률   │ 점수    │ 획득머니    │");
+		System.out.println("├──────┼──────────┼────────┼──────────┤");
+		System.out.println("│ 2짜   │ 100%    │ 10점    │ 100원     │");
+		System.out.println("│ 3짜   │ 50%     │ 25점    │ 120원     │");
+		System.out.println("│ 4짜   │ 25%     │ 60점    │ 150원     │");
+		System.out.println("│ 런커   │ 10%     │ 500점   │ 5000원    │");
+		System.out.println("└──────┴──────────┴────────┴──────────┘");	
+	}
+
+	public void alertBuyBait() {
+		System.out.println("미끼가 부족합니다. 상점에 가서 사오세요.");
+		
+	}
+
+	public boolean hit(MemberVO loginVO) {
+		int rodId = loginVO.getRodid();
+		boolean isHit = false;
+		
+		int barLength = 30;   // 바 길이
+        int targetStart = 0; // 성공 구간 시작
+        int targetEnd = 0;   // 성공 구간 끝
+        int middlePoint = barLength / 2;
+        boolean forward = true;
+        
+        if(rodId == 1) {
+        	targetEnd = 4;
+        } else if(rodId == 2) {
+        	targetEnd = 5;
+        } else if(rodId == 3) {
+        	targetEnd = 6;
+        } else if(rodId == 4) {
+        	targetEnd = 7;
+        }
+
+        System.out.println("=== 엔터 입력으로 타이밍 맞추기 ===");
+
+        while (true) {
+            // 바 그리기
+        	
+        	StringBuilder sb = new StringBuilder("");
+        	for (int i = 0; i < barLength; i++) {
+        	    if (i == middlePoint) sb.append("↓");
+        	    else sb.append(" ");
+        	}
+        	sb.append("\n");
+        	
+            sb.append("[");
+            for (int i = 0; i < barLength; i++) {
+                if (i >= targetStart && i <= targetEnd) sb.append("=");
+                else sb.append(" ");
+            }
+            sb.append("]");
+
+            System.out.println("\r" + sb);
+
+            // 방향 전환
+            if (forward) { 
+            	targetStart++;
+            	targetEnd++;
+            } else {
+            	targetStart--;
+            	targetEnd--;
+            }
+            
+            if (targetEnd == barLength - 1) {
+            	forward = false;
+            }
+            
+            if (targetStart == 0) {
+            	forward = true;
+            }
+
+            try {
+            	// 움직임 속도
+				Thread.sleep(80);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} 
+
+            // 입력 감지 (간단히 Enter로 처리)
+            try {
+				if (System.in.available() > 0) {  // 키 입력 대기 확인
+				    String input = sc.nextLine();
+				    if (middlePoint >= targetStart && middlePoint <= targetEnd) {
+				    	System.out.println("\n🎉 찌 맞추기 성공!");
+				        isHit = true;
+				    } else {
+				    	System.out.println("\n💀 찌 맞추기 실패!");
+				    	isHit = false;
+				    }
+				    break;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+        
+        return isHit;
+	}
+
+	public HashMap<String, String> fishing() {
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		Random rd = new Random();
+		
+		// 랜덤 값 1 ~ 10 물고기 크기 정함
+		int fishSize = rd.nextInt(10) + 1;
+		String fishSizeName = null;
+		String isSuccess = null;
+		
+		// 물고기 크기 값 정함
+		if(fishSize >= 1 && fishSize <= 4) {
+			fishSizeName = "2짜";
+		} else if(fishSize >= 5 && fishSize <= 7) {
+			fishSizeName = "3짜";
+		} else if(fishSize >= 8 && fishSize <= 9) {
+			fishSizeName = "4짜";
+		} else {
+			fishSizeName = "런커";
+		}
+		
+		map.put("물고기크기", fishSizeName);
+		
+		// 물고기 크기에 따른 낚을 확률 정함
+		int hitRatio = 0;
+		
+		if(fishSizeName.equals("2짜")) {
+			// 100%
+			isSuccess = "success";
+		} else if(fishSizeName.equals("3짜")) {
+			// 50%
+			hitRatio = rd.nextInt(2) + 1;
+			if(hitRatio == 1) {
+				isSuccess = "success";
+			} else {
+				isSuccess = "fail";
+			}
+		} else if(fishSizeName.equals("4짜")) {
+			// 25%
+			hitRatio = rd.nextInt(4) + 1;
+			if(hitRatio == 1) {
+				isSuccess = "success";
+			} else {
+				isSuccess = "fail";
+			}
+		} else {
+			// 10%
+			hitRatio = rd.nextInt(10) + 1;
+			if(hitRatio == 1) {
+				isSuccess = "success";
+			} else {
+				isSuccess = "fail";
+			}
+		}
+		
+		if(isSuccess.equals("success")) {
+			System.out.println("\n🎉 " + isSuccess + " 낚시 성공!");
+		} else {
+			System.out.println("\n💀 " + isSuccess + " 낚시 실패!");
+		}
+		
+		map.put("성공실패", isSuccess);
+				
+		return map;
 	}
 
 }
