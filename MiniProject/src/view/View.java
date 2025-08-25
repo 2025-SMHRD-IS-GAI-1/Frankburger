@@ -47,8 +47,8 @@ public class View {
 		System.out.print("비밀번호 입력 : ");
 		String pw = sc.next();
 
-		MemberVO mvo = new MemberVO(); 
-		return mvo;
+//		MemberVO mvo = new MemberVO(); 
+		return null;
 
 	}
 
@@ -75,9 +75,9 @@ public class View {
 		System.out.println("나이 입력 : ");
 		int age = sc.nextInt();
 
-		MemberVO mvo = new MemberVO();
+//		MemberVO mvo = new MemberVO();
 		
-		return mvo;
+		return null;
 	}
 
 
