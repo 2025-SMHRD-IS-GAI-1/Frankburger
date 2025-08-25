@@ -11,7 +11,10 @@ public class RodVO {
 		this.rodid = rodId;
 		this.name = name;
 		this.price = price;
-
+	}
+	
+	public RodVO() {
+		
 	}
 
 	public int getRodid() {

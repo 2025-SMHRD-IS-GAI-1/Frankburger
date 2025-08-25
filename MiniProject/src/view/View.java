@@ -131,10 +131,11 @@ public class View {
 	}
 
 	//상태 출력
-    public void printStatus(MemberVO mvo) {
-        System.out.println("  점 수 : "+ mvo.getPoint());
+    public void printStatus(MemberVO mvo, RodVO rvo) {
+        System.out.println("  점 수 : " + mvo.getPoint());
         System.out.println("  골 드 : " + mvo.getGold());
         System.out.println("  미 끼 : " + mvo.getBait());
+        System.out.println("  낚시대 : " + rvo.getName());
      }
 
 	// 미끼 사기 출력

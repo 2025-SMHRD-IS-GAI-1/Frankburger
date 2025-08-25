@@ -126,5 +126,39 @@ public class DAO {
 	public ArrayList<RodVO> getRodList() {
 		return null;
 	}
+	
+	
+	//
+	public RodVO selectByRodId(MemberVO mvo) {
+		// TODO Auto-generated method stub
+		RodVO rvo = new RodVO();
+		
+		try {
+			getConn();
+
+			String sql = "SELECT R.NAME FROM MEMBER M INNER JOIN ROD R "
+					+ "ON(M.ROD_ID = R.ROD_ID) "
+					+ "WHERE M.MEMBER_ID = ?";
+			
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, mvo.getMemberId());
+			// psmt : sql문을 담아서 DB에 보내줌
+
+
+			rs = psmt.executeQuery();
+
+			if (rs.next()) {
+			    // 로그인 성공 → rs에서 꺼낸 값으로 MemberVO 채우기
+				rvo.setName(rs.getString("NAME"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			getClose();
+		}
+		
+		return rvo;
+	}
 
 }
