@@ -24,14 +24,14 @@ public class Controller {
 	// [1]- [1] 상 [2] 하 [3] 좌 [4] 우 [5] 상태출력 [6] 종료
 	// [1]- [1]~[4]
 	// 맵 출력
-	// 상점 만남 : [1]미끼사기 [2]낚시대 구매 [3]종료 >> 
+	// 상점 만남 : [1]미끼사기 [2]낚시대 구매 [3]종료 >>
 	// 보유금액 : ???원
-	// [1]- [2]- 
+	// [1]- [2]-
 	// 1. 대나무낚시대 : 1000원
-	// 2. ? 낚시대 : 10000원 
-	// 입력 >> 
+	// 2. ? 낚시대 : 10000원
+	// 입력 >>
 	// 낚시터 만남 : [1]낚시하기 [2] 확률보기 [3]종료
-	// [1]- [5]- 
+	// [1]- [5]-
 	// 미끼 : 10개 , 포인트 : 10점, 보유금액 : 100원, 낚시대 : 대나무낚시대
 	public void run() {
 		while (true) {
@@ -47,12 +47,12 @@ public class Controller {
 
 				}
 
-//			} else if (input == 2) {
-//				int row = dao.join(view.showJoin());
-//				view.statusMenu(row, "회원가입");
-//
-//			} else {
-//				break;
+			} else if (input == 2) {
+				int row = dao.join(view.showJoin());
+				view.showInfo(row, "회원가입"); // 성공/실패 출력(view)
+
+			} else {
+				break;
 			}
 		}
 

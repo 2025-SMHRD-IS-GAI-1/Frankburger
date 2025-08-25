@@ -62,18 +62,29 @@ public class DAO {
 		try {
 			getConn();
 
-			String sql = "SELECT * FROM MEMBER WHERE ID = ? AND PW = ?";
+			String sql = "SELECT * FROM MEMBER WHERE MEMBER_ID = ? AND PW = ?";
 
 			psmt = conn.prepareStatement(sql);
 			// psmt : sql문을 담아서 DB에 보내줌
 
-			// ? 인자 채워주
+			// ? 인자 채워주기
+			psmt.setString(1, mvo.getMemberId());
+			psmt.setString(2, mvo.getPw());
 
 			rs = psmt.executeQuery();
 
-			if (rs.next() == true) {
-				// 역할이 관리자라면 adminVo를 생성, 바인딩
-				
+			if (rs.next()) {
+			    // 로그인 성공 → rs에서 꺼낸 값으로 MemberVO 채우기
+			    loginVO = new MemberVO(
+			        rs.getString("MEMBER_ID"),
+			        rs.getString("PW"),
+			        rs.getString("NAME"),
+			        rs.getInt("ROD_ID"),
+			        rs.getInt("GOLD"),
+			        rs.getInt("POINT"),
+			        rs.getInt("BAIT"),
+			        0,
+			        0);
 			}
 
 		} catch (Exception e) {
@@ -92,11 +103,13 @@ public class DAO {
 		try {
 			getConn();
 
-			String sql = "INSERT INTO MEMBER(ID, PW, NAME, AGE) VALUES(?, ?, ?, ?)";
+			String sql = "INSERT INTO MEMBER(MEMBER_ID, PW, NAME) VALUES(?, ?, ?)";
 
 			psmt = conn.prepareStatement(sql);
 
-			
+			psmt.setString(1, mvo.getMemberId());
+			psmt.setString(2, mvo.getPw());
+			psmt.setString(3, mvo.getName());
 
 			row = psmt.executeUpdate();
 
@@ -108,7 +121,7 @@ public class DAO {
 		}
 		return row;
 	}
-	
+
 	// 낚시대 전체 조회
 	public ArrayList<RodVO> getRodList() {
 		return null;

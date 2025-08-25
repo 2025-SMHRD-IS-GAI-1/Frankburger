@@ -4,7 +4,7 @@ package model;
 public class MemberVO {
 
 	// field
-	private String member;
+	private String memberId;
 	private String pw;
 	private String name;
 	private int rodid;
@@ -15,9 +15,9 @@ public class MemberVO {
 	private int y;
 
 	// method
-	public MemberVO(String member, String pw, String name, int rodid, int gold, int point, int bait, int x, int y) {
+	public MemberVO(String memberId, String pw, String name, int rodid, int gold, int point, int bait, int x, int y) {
 		super();
-		this.member = member;
+		this.memberId = memberId;
 		this.pw = pw;
 		this.name = name;
 		this.rodid = rodid;
@@ -28,12 +28,17 @@ public class MemberVO {
 		this.y = y;
 	}
 
-	public String getMember() {
-		return member;
+	// 기본생성자
+	public MemberVO() {
+
 	}
 
-	public void setMember(String member) {
-		this.member = member;
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 
 	public String getPw() {
@@ -99,23 +104,25 @@ public class MemberVO {
 	public void setPoint(int point) {
 		this.point = point;
 	}
-	
+
 	public void upgrade(int rodid) {
-		
+
 	}
-	
+
 	public void buyBait(int count) {
-		
+
 	}
+
 	public void FishingSucces() {
-		
+
 	}
+
 	public void FishingFail() {
-		
+
 	}
+
 	public void move(int dir) {
-		
+
 	}
-	
-	
+
 }
