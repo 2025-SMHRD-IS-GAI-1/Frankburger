@@ -1,11 +1,10 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
-import model.RodVO;
 import model.MemberVO;
+import model.RodVO;
 
 // View 역할 : 입출력 담당
 public class View {
@@ -29,7 +28,7 @@ public class View {
 	}
 
 	public int showMenu3() {
-		System.out.print("[1]미끼사기 [2]낚시대 구매 [3]종료 >>");
+		System.out.println("[1]미끼사기 [2]낚시대 구매 [3]종료 >>");
 		int input = sc.nextInt();
 		return input;
 	}
@@ -109,18 +108,53 @@ public class View {
 	}
 
 	// 미끼 사기 출력
-	public int buybait(int count) {
-		return 1;
+	public int buybait() {
+		System.out.print("미끼를 몇개 구매 하시겠습니까?");
+		int count = sc.nextInt();
+		return count;
+
 	}
 
-	// 낚시대 구매 출력
-	public int buyRod() {
-		return 1;
-	}
-
+	
+	
 	// 낚시하기
 	public void fishing(MemberVO loginVO) {
 
+	}//미끼 사고 인사하기 - 수호가 추가
+	public void bye(int a) {
+		System.out.println("미끼를"+a +"개 사셨습니다");
+		System.out.println(a*25+"골드를 사용하셨습니다");
+	}
+	// 돈이 부족합니다 -- 수호가 추가
+	public void NoGold() {
+		System.out.println("돈이 없습니다 돈을 더 벌어오세요!");
+	}
+	
+	
+	// 낚시대 구매 출력-- 수호가 추가 근데 DB로 해야하나?
+	public int buyRod() {
+		System.out.println("[1]다이소 낚시대 1000원 [2]카본 낚시대 3000원 [3] 다이아몬드 낚시대 10000원");
+		int rod=sc.nextInt();
+		
+		
+		return rod;
+	}
+	
+	public void NoNum() {//수호가 추가
+		System.out.println("번호를 잘 못 입력 하셨습니당");
+	}
+	
+	public void printBuyRod(int rowId) {
+		if(rowId == 1) {
+			System.out.println("다이소 낚시대를 구매하셨습니다");
+			System.out.println("1000골드를 사용하셨습니다");
+		}else if(rowId==2) {
+			System.out.println("카본 낚시대를 구매하셨습니다");
+			System.out.println("3000골드를 사용하셨습니다");
+		}else if(rowId==3) {
+			System.out.println("다이아몬들 낚시대를 구매하셨습니다");
+			System.out.println("10000골드를 사용하셨습니다");
+		}else{System.out.println("번호를 잘못 입력하셨습니다");}
 	}
 
 }

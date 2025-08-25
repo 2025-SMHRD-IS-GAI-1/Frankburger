@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import model.DAO;
 import model.MemberVO;
+import model.RodVO;
 import view.View;
 
 public class Controller {
@@ -41,10 +42,90 @@ public class Controller {
 				MemberVO loginVO = dao.login(view.showLogin());
 				view.statusLogin(loginVO);
 
-				if (loginVO != null) {
-					while (true) {
+				int dir = 0;
+				
+				if(dir == 0) {
+					while(true) {
+						int value = view.showMenu3();
+						if(value == 1) {
+							// 미끼 사는거
+						
+							int count = view.buybait();
+							
+							if(loginVO.getGold()-(25*count)>=0) {
+								loginVO.setBait(loginVO.getBait()+count);
+								loginVO.setGold(loginVO.getGold()-(25*count));
+								view.bye(count);
+							}else {
+								view.NoGold();
+							}
+							
+							
+							
+						}else if(value == 2) {
+							//[2]낚시대 구매
+							
+							int rod=view.buyRod();
+							 RodVO rodVO = null;
+							
+							
+							if (rod ==1) {if(loginVO.getGold()>1000) {
+								//다이소 낚시대
+								loginVO.setGold(loginVO.getGold()-1000);
+								rodVO = new RodVO(2, "다이소 낚시대", 1000);
+						        loginVO.setRodid(rodVO.getRodid()); 
+						        view.printBuyRod(rod);
+							}else {
+								view.NoGold();
+								
+							}
+								
+							}else if(rod==2) { 
+								if(loginVO.getGold()>3000) {
+									// 카본 낚시대
+								loginVO.setGold(loginVO.getGold()-3000);
+								rodVO = new RodVO(3, "카본 낚시대", 3000);
+						        loginVO.setRodid(rodVO.getRodid()); 
+						        view.printBuyRod(rod);
+								}else {
+						        	
+						        	view.NoGold();}
+								
+								
+								
+							}else if (rod==3)  { 
+								if(loginVO.getGold()>10000) {
+									// 카본 낚시대
+								loginVO.setGold(loginVO.getGold()-10000);
+								rodVO = new RodVO(4, "다이아몬드 낚시대", 10000);
+						        loginVO.setRodid(rodVO.getRodid()); 
+						        view.printBuyRod(rod);
+								}else {
+						        	
+						        	view.NoGold();}
+								
+								//다이아몬드 낚시대
+								
+								
+							
+							
+							}else {view.NoNum();
+								//번호 잘못 입력 
+								
+							}
+							
+							
+							
+						}else if(value ==3) {
+							
+							//[3]종료
+							
+							break;
+						}else {
+							view.NoNum();;
+						}
 					}
-
+					
 				}
 
 			} else if (input == 2) {
