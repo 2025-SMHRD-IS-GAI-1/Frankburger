@@ -37,6 +37,23 @@ public class Controller {
 	// [1]- [5]-
 	// 미끼 : 10개 , 포인트 : 10점, 보유금액 : 100원, 낚시대 : 대나무낚시대
 	public void run() {
+		
+		String[][] map = {
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", "F", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", "S", " ", " ", " ", " ", " "},
+            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
+        };
+		
+		int x = 4;
+		int y = 4;
+		
 		// 임시 입력 지워야 함
 		Scanner sc = new Scanner(System.in);
 		while (true) {
@@ -49,33 +66,33 @@ public class Controller {
 
 					while (true) {
 						// 1. 뷰에게 현재 맵 상태를 출력하라고 요청
-						view.printMap(loginVO);
+						view.printMap(map, x, y);
 
-						int x = loginVO.getX();
-						int y = loginVO.getY();
+						int nowX = x;
+						int nowY = y;
 
-						int dir = view.showMenu2();
+						String dir = view.showMapMenu();
 
-						if (dir == 1) {
-							loginVO.setX(loginVO.getX() - 1);
-						} else if (dir == 2) {
-							loginVO.setX(loginVO.getX() + 1);
-						} else if (dir == 3) {
-							loginVO.setY(loginVO.getY() - 1);
-						} else if (dir == 4) {
-							loginVO.setY(loginVO.getY() + 1);
-						} else if (dir == 5) {
+						if (dir.equals("w")) {
+							x--;
+						} else if (dir.equals("s")) {
+							x++;
+						} else if (dir.equals("a")) {
+							y--;
+						} else if (dir.equals("d")) {
+							y++;
+						} else if (dir.equals("5")) {
 							view.printStatus(loginVO);
 						} else {
 							break;
 						}
 
-						String event = view.eventStart(loginVO.getX(), loginVO.getY());
+						String event = view.eventStart(map, x, y);
 
 						if (event != null) {
 							if (event.equals("상점")) {
 								while (true) {
-									int value = view.showMenu3();
+									int value = view.showStoreMenu();
 									if (value == 1) {
 										// 미끼 사는거
 
@@ -142,8 +159,8 @@ public class Controller {
 									} else if (value == 3) {
 
 										// [3]종료
-										loginVO.setX(x);
-										loginVO.setY(y);
+										x = nowX;
+										y = nowY;
 										break;
 									} else {
 										view.NoNum();
@@ -151,7 +168,7 @@ public class Controller {
 								}
 							} else if (event.equals("낚시터")) {
 								while (true) {
-									int menu4 = view.showMenu4();
+									int menu4 = view.showFishingMenu();
 									if (menu4 == 1) {
 										// 낚시하기
 
@@ -163,10 +180,10 @@ public class Controller {
 
 										boolean isHit = view.hit(loginVO);
 										if (isHit) {
-											HashMap<String, String> map = view.fishing();
+											HashMap<String, String> hm = view.fishing();
 
-											String fishSizeName = map.get("물고기크기");
-											String isSuccess = map.get("성공실패");
+											String fishSizeName = hm.get("물고기크기");
+											String isSuccess = hm.get("성공실패");
 											int gold = 0;
 											int point = 0;
 
@@ -203,8 +220,8 @@ public class Controller {
 										// 낚시터 확률보기
 										view.getFishingSpotInfo();
 									} else {
-										loginVO.setX(x);
-										loginVO.setY(y);
+										x = nowX;
+										y = nowY;
 										break;
 									}
 								}

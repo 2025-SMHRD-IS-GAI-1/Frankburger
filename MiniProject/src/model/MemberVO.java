@@ -11,12 +11,9 @@ public class MemberVO {
 	private int gold;
 	private int point;
 	private int bait;
-	private int x;
-	private int y;
 
 	// method
-	public MemberVO(String memberId, String pw, String name, int rodid, int gold, int point, int bait, int x, int y) {
-		super();
+	public MemberVO(String memberId, String pw, String name, int rodid, int gold, int point, int bait) {
 		this.memberId = memberId;
 		this.pw = pw;
 		this.name = name;
@@ -24,8 +21,6 @@ public class MemberVO {
 		this.gold = gold;
 		this.point = point;
 		this.bait = bait;
-		this.x = x;
-		this.y = y;
 	}
 
 	// 기본생성자
@@ -79,22 +74,6 @@ public class MemberVO {
 
 	public void setBait(int bait) {
 		this.bait = bait;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
 	}
 
 	public int getPoint() {
