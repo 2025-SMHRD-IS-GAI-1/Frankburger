@@ -14,19 +14,7 @@ public class View {
 
 	// 1. 필드
 	private Scanner sc = new Scanner(System.in);
-	private String[][] map = {
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", "F", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", "S", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-        };
-
+	
 	// 2. 메서드
 	// 메뉴 보여주는 메서드
 	public int showMenu() {
@@ -35,19 +23,19 @@ public class View {
 		return input;
 	}
 
-	public int showMenu2() {
-		System.out.print("[1] 상 [2] 하 [3] 좌 [4] 우 [5] 상태출력 [6] 종료");
-		int input = sc.nextInt();
+	public String showMapMenu() {
+		System.out.print("[w] 상 [s] 하 [a] 좌 [d] 우 [5] 상태출력 [6] 종료");
+		String input = sc.next();
 		return input;
 	}
 
-	public int showMenu3() {
+	public int showStoreMenu() {
 		System.out.println("[1]미끼사기 [2]낚시대 구매 [3]종료 >>");
 		int input = sc.nextInt();
 		return input;
 	}
 
-	public int showMenu4() {
+	public int showFishingMenu() {
 		System.out.print("[1]낚시하기 [2]확률보기 [3]종료 >>");
 		int input = sc.nextInt();
 		return input;
@@ -112,14 +100,14 @@ public class View {
 	}
 
 	// 맵 출력
-	public void printMap(MemberVO mvo) {
+	public void printMap(String[][] map, int x, int y) {
 		for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
             	if(map[i][j].equals("S")) {
             		System.out.print("🏪");
             	} else if(map[i][j].equals("F")) {
             		System.out.print("🎣");
-            	} else if(i == mvo.getX() && j == mvo.getY()) {
+            	} else if(i == x && j == y) {
             		System.out.print("🧍");
             	} else {
             		System.out.print("⬜");
@@ -391,7 +379,7 @@ public class View {
 		return map;
 	}
 
-	public String eventStart(int x, int y) {
+	public String eventStart(String[][]map, int x, int y) {
 		// TODO Auto-generated method stub
 		String result = null;
 		

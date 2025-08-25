@@ -82,9 +82,7 @@ public class DAO {
 			        rs.getInt("ROD_ID"),
 			        rs.getInt("GOLD"),
 			        rs.getInt("POINT"),
-			        rs.getInt("BAIT"),
-			        5,
-			        5);
+			        rs.getInt("BAIT"));
 			}
 
 		} catch (Exception e) {
