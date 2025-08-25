@@ -21,18 +21,19 @@ public class View {
 		int input = sc.nextInt();
 		return input;
 	}
-	
+
 	public int showMenu2() {
 		System.out.print("[1] 상 [2] 하 [3] 좌 [4] 우 [5] 상태출력 [6] 종료");
 		int input = sc.nextInt();
 		return input;
-	} 
+	}
+
 	public int showMenu3() {
 		System.out.print("[1]미끼사기 [2]낚시대 구매 [3]종료 >>");
 		int input = sc.nextInt();
 		return input;
 	}
-	
+
 	public int showMenu4() {
 		System.out.print("[1]낚시하기 [2]종료 >>");
 		int input = sc.nextInt();
@@ -46,9 +47,10 @@ public class View {
 		String id = sc.next();
 		System.out.print("비밀번호 입력 : ");
 		String pw = sc.next();
-
-//		MemberVO mvo = new MemberVO();
-		return null;
+		MemberVO mvo = new MemberVO();
+	    mvo.setMemberId(id);  // 입력받은 ID 저장
+	    mvo.setPw(pw);        // 입력받은 PW 저장
+	    return mvo;           // Controller → DAO로 전달
 
 	}
 
@@ -56,6 +58,7 @@ public class View {
 	public void statusLogin(MemberVO loginVO) {
 		if (loginVO != null) {
 			System.out.println("로그인 성공");
+			System.out.println(loginVO.getName() + "님 환영합니다!");
 			// loginVO
 			// 사용자냐 관리자냐에 따라 호출되는게 다름(오버라이딩 했으니까)
 		} else {
@@ -70,49 +73,54 @@ public class View {
 		String id = sc.next();
 		System.out.print("비밀번호 입력 : ");
 		String pw = sc.next();
-		System.out.println("이름 입력 : ");
+		System.out.print("이름 입력 : ");
 		String name = sc.next();
-		System.out.println("나이 입력 : ");
-		int age = sc.nextInt();
 
-//		MemberVO mvo = new MemberVO();
-		
-		return null;
+		MemberVO mvo = new MemberVO();
+		mvo.setMemberId(id);
+		mvo.setPw(pw);
+		mvo.setName(name);
+
+		return mvo;
 	}
 
+	// 회원가입 성공 여부 출력 메소드
+	public void showInfo(int row, String msg) {
+		if (row == 1) {
+			System.out.println(msg + " 성공!");
+		} else { // msg: "회원가입"
+			System.out.println(msg + " 실패!");
+		}
+	}
 
 	// 회원 정보들을 출력하는 메서드
 	public void showMembers(ArrayList<RodVO> list) {
-		
 
 	}
-	
+
 	// 맵 출력
 	public void printMap() {
-		
+
 	}
-	
+
 	// 상태 출력
 	public void printStatus() {
-		
+
 	}
-	
+
 	// 미끼 사기 출력
 	public int buybait(int count) {
 		return 1;
 	}
-	
+
 	// 낚시대 구매 출력
 	public int buyRod() {
 		return 1;
 	}
-	
-	// 낚시하기 
+
+	// 낚시하기
 	public void fishing(MemberVO loginVO) {
-		
+
 	}
-	
-
-
 
 }
