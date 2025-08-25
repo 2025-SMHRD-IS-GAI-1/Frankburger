@@ -14,6 +14,7 @@ public class Main {
 //		DAO dao = new DAO();
 //		MemberView view = new MemberView(); 
 //		
+//		
 //		// 동작을 시키기 위해서 컨트롤러를 생성
 //		MemberController controller = new MemberController(view, dao);
 //		controller.run();
