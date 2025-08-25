@@ -47,12 +47,12 @@ public class Controller {
 
 				}
 
-//			} else if (input == 2) {
+			} else if (input == 2) {
 //				int row = dao.join(view.showJoin());
 //				view.statusMenu(row, "회원가입");
-//
-//			} else {
-//				break;
+
+			} else {
+				break;
 			}
 		}
 
