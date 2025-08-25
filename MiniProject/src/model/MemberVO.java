@@ -105,24 +105,4 @@ public class MemberVO {
 		this.point = point;
 	}
 
-	public void upgrade(int rodid) {
-
-	}
-
-	public void buyBait(int count) {
-
-	}
-
-	public void FishingSucces() {
-
-	}
-
-	public void FishingFail() {
-
-	}
-
-	public void move(int dir) {
-
-	}
-
 }
