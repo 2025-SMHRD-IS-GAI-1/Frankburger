@@ -65,8 +65,7 @@ public class Controller {
 						} else if (dir == 4) {
 							loginVO.setY(loginVO.getY() + 1);
 						} else if (dir == 5) {
-							RodVO rvo = dao.selectByRodId(loginVO);
-							view.printStatus(loginVO, rvo);
+							view.printStatus(loginVO);
 						} else {
 							break;
 						}

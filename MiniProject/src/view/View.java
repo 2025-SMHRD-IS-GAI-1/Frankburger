@@ -131,11 +131,22 @@ public class View {
 	}
 
 	//상태 출력
-    public void printStatus(MemberVO mvo, RodVO rvo) {
+    public void printStatus(MemberVO mvo) {
         System.out.println("  점 수 : " + mvo.getPoint());
         System.out.println("  골 드 : " + mvo.getGold());
         System.out.println("  미 끼 : " + mvo.getBait());
-        System.out.println("  낚시대 : " + rvo.getName());
+        String rodName = "";
+        int rodId = mvo.getRodid();
+        if(rodId == 1) {
+        	rodName = "대나무 낚시대";
+        } else if(rodId == 2) {
+        	rodName = "다이소 낚시대";
+        } else if(rodId == 3) {
+        	rodName = "카본 낚시대";
+        } else if(rodId == 4){
+        	rodName = "다이아몬드 낚시대";
+        }
+        System.out.println("  낚시대 : " + rodName);
      }
 
 	// 미끼 사기 출력
