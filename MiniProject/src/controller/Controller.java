@@ -94,18 +94,19 @@ public class Controller {
 							view.NoNum();
 							continue;
 						}
-						
+
 						if (nextX < 0 || nextX >= map.length || nextY < 0 || nextY >= map[0].length) {
 							System.out.println("맵을 넘어가면 안됩니다.");
 							continue;
-							
+
 						}
 
 						String event = view.eventStart(map, nextX, nextY);
-						
+
 						if (event != null) {
 							if (event.equals("상점")) {
-								while (true) {view.printStatus(loginVO);
+								while (true) {
+									view.printStatus(loginVO);
 									int value = view.showStoreMenu();
 									if (value == 1) {
 										// 미끼 사는거
@@ -126,25 +127,25 @@ public class Controller {
 										int rod = view.buyRod();
 										RodVO rodVO = null;
 										//// 여기
-										if(rod ==1) { 
-											//대나무 낚시대
-											if(loginVO.getRodid() == 1) {
+										if (rod == 1) {
+											// 대나무 낚시대
+											if (loginVO.getRodid() == 1) {
 												view.cantBuy();
 											}
-												
-											else {rodVO = new RodVO(1, "대나무 낚시대", 0);
-											loginVO.setRodid(rodVO.getRodid());
-											view.printBuyRod(rod);}
+
+											else {
+												rodVO = new RodVO(1, "대나무 낚시대", 0);
+												loginVO.setRodid(rodVO.getRodid());
+												view.printBuyRod(rod);
+											}
 										}
-										
-										
-										
+
 										else if (rod == 2) {
 
-											if(loginVO.getRodid() == 2) {
+											if (loginVO.getRodid() == 2) {
 												view.cantBuy();
 											}
-											
+
 											else if (loginVO.getGold() > 1000) {
 												// 다이소 낚시대
 												loginVO.setGold(loginVO.getGold() - 1000);
@@ -157,10 +158,10 @@ public class Controller {
 											}
 
 										} else if (rod == 3) {
-											if(loginVO.getRodid() == 3) {
+											if (loginVO.getRodid() == 3) {
 												view.cantBuy();
 											}
-											
+
 											else if (loginVO.getGold() > 3000) {
 												// 카본 낚시대
 												loginVO.setGold(loginVO.getGold() - 3000);
@@ -173,11 +174,10 @@ public class Controller {
 											}
 
 										} else if (rod == 4) {
-										
-											if(loginVO.getRodid() == 4) {
+
+											if (loginVO.getRodid() == 4) {
 												view.cantBuy();
-											}
-											else if (loginVO.getGold() > 10000) {
+											} else if (loginVO.getGold() > 10000) {
 												// 다이아몬드 낚시대
 												loginVO.setGold(loginVO.getGold() - 10000);
 												rodVO = new RodVO(4, "다이아몬드 낚시대", 10000);
@@ -188,15 +188,23 @@ public class Controller {
 												view.NoGold();
 											}
 
-											
-
 										} else {
 											view.NoNum();
 											// 번호 잘못 입력
 
 										}
+										
+										// 미끼수가 0 이고 gold가 25보다 적을때 배드엔딩
+										int bait = loginVO.getBait();
+										int gold = loginVO.getGold();
+										
+										if(bait == 0 && gold < 25) {
+											dao.initialPoint(loginVO);
+											view.showBadEnding();
+											return;
+										}
 
-										} else if (value == 3) {
+									} else if (value == 3) {
 
 										break;
 									} else {
@@ -259,13 +267,24 @@ public class Controller {
 									} else {
 										break;
 									}
-									
+
 									int finishPoint = loginVO.getPoint();
-									
-									if(finishPoint >= 100) {
-									    dao.initialPoint(loginVO);
-									    view.showEnding();
-									    return;   // run() 메서드 종료 → 자연스럽게 프로그램 종료
+
+									// 2000점 이상이면 굿엔딩
+									if (finishPoint >= 2000) {
+										dao.initialPoint(loginVO);
+										view.showGoodEnding();
+										return; // run() 메서드 종료 → 자연스럽게 프로그램 종료
+									}
+
+									// 미끼수가 0 이고 gold가 25보다 적을때 배드엔딩
+									int bait = loginVO.getBait();
+									int gold = loginVO.getGold();
+
+									if (bait == 0 && gold < 25) {
+										dao.initialPoint(loginVO);
+										view.showBadEnding();
+										return;
 									}
 								}
 							}
@@ -275,7 +294,7 @@ public class Controller {
 						}
 
 					}
-					} else {
+				} else {
 					view.showLoginFail();
 				}
 

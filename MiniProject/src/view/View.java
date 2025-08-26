@@ -419,10 +419,15 @@ public class View {
 
 	}
 
-	public void showEnding() {
+	public void showGoodEnding() {
 		System.out.println("최고의 낚싯대를 손에 쥔 김수호, 마침내 전설의 배스를 낚아 올렸다.");
 		System.out.println("이제 낚시터 사람들은 그를 이렇게 부른다… ‘배스킹(🐟👑)’.");
 		System.out.println("오늘도... 여친은 없다. 게임 클리어!");
+	}
+
+	public void showBadEnding() {
+		System.out.println("여전히 혼자인 그의 처지를 안타까워했다...");
+		System.out.println("오늘도... 여친은 없다. 게임 오버.");
 	}
 
 }
