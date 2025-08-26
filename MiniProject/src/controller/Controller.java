@@ -83,8 +83,16 @@ public class Controller {
 						} else if (dir.equals("5")) {
 							view.printStatus(loginVO);
 							continue;
-						} else {
+						} else if (dir.equals("1")) { // 상태출력
+							view.printStatus(loginVO);
+						} else if (dir.equals("2")) { // 저장
+							dao.Save(loginVO);
+							continue;
+						} else if (dir.equals("4")) { // 종료
 							break;
+						} else {
+							view.NoNum();
+							continue;
 						}
 						
 						if (nextX < 0 || nextX >= map.length || nextY < 0 || nextY >= map[0].length) {
