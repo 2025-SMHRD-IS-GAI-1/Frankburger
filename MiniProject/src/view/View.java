@@ -30,7 +30,7 @@ public class View {
 	}
 
 	public int showStoreMenu() {
-		System.out.println("[1]미끼구매 [2]낚시대구매 [3]종료 >>");
+		System.out.println("[1]미끼구매 25Gold [2]낚시대구매 [3]종료 >>");
 		int input = sc.nextInt();
 		return input;
 	}
@@ -145,10 +145,8 @@ public class View {
 
 	}
 
-	// 낚시하기
-	public void fishing(MemberVO loginVO) {
-
-	}// 미끼 사고 인사하기 - 수호가 추가
+	
+	// 미끼 사고 인사하기 - 수호가 추가
 
 	public void bye(int a) {
 		System.out.println("미끼를" + a + "개 사셨습니다");
@@ -320,7 +318,7 @@ public class View {
 		return isHit;
 	}
 
-	public HashMap<String, String> fishing() {
+	public HashMap<String, String> fishing(int weather) {
 		HashMap<String, String> map = new HashMap<String, String>();
 
 		Random rd = new Random();
@@ -345,22 +343,24 @@ public class View {
 
 		// 물고기 크기에 따른 낚을 확률 정함
 		int hitRatio = 0;
-
-		if (fishSizeName.equals("2짜")) {
+		
+		if( weather==1)//날씨 맑을 때 {
+		
+		if(fishSizeName.equals("2짜")) {
 			// 100%
 			isSuccess = "success";
-		} else if (fishSizeName.equals("3짜")) {
+		} else if(fishSizeName.equals("3짜")) {
 			// 50%
 			hitRatio = rd.nextInt(2) + 1;
-			if (hitRatio == 1) {
+			if(hitRatio == 1) {
 				isSuccess = "success";
 			} else {
 				isSuccess = "fail";
 			}
-		} else if (fishSizeName.equals("4짜")) {
+		} else if(fishSizeName.equals("4짜")) {
 			// 25%
 			hitRatio = rd.nextInt(4) + 1;
-			if (hitRatio == 1) {
+			if(hitRatio == 1) {
 				isSuccess = "success";
 			} else {
 				isSuccess = "fail";
@@ -368,12 +368,50 @@ public class View {
 		} else {
 			// 10%
 			hitRatio = rd.nextInt(10) + 1;
-			if (hitRatio == 1) {
+			if(hitRatio == 1) {
 				isSuccess = "success";
 			} else {
 				isSuccess = "fail";
 			}
 		}
+		
+		else { //weather==2 (폭우)
+			
+			if(fishSizeName.equals("2짜")) {
+				// 80%
+				hitRatio = rd.nextInt(10) + 1;
+				if(hitRatio <= 8) {
+					isSuccess = "success";
+				} else {
+					isSuccess = "fail";
+				}
+			} else if(fishSizeName.equals("3짜")) {
+				// 40%
+				hitRatio = rd.nextInt(10) + 1;
+				if(hitRatio <=4 ) {
+					isSuccess = "success";
+				} else {
+					isSuccess = "fail";
+				}
+			} else if(fishSizeName.equals("4짜")) {
+				// 20%
+				hitRatio = rd.nextInt(5) + 1;
+				if(hitRatio == 1) {
+					isSuccess = "success";
+				} else {
+					isSuccess = "fail";
+				}
+			} else {
+				// 8%
+				hitRatio = rd.nextInt(100) + 1;
+				if(hitRatio <= 8) {
+					isSuccess = "success";
+				} else {
+					isSuccess = "fail";
+				}
+			}
+		}
+		
 
 		if (isSuccess.equals("success")) {
 			System.out.println("\n🎉 " + isSuccess + " 낚시 성공!");
@@ -428,6 +466,15 @@ public class View {
 	public void showBadEnding() {
 		System.out.println("여전히 혼자인 그의 처지를 안타까워했다...");
 		System.out.println("오늘도... 여친은 없다. 게임 오버.");
+	}
+	public void showWeather(int weather) {
+		if (weather == 1) {
+			System.out.println(" 오늘은 맑음!!!");
+		} else {
+			System.out.println("폭우임 우르르쾅쾅!!");
+			System.out.println("폭우면 잡힐확률 20%감소!");
+		}
+
 	}
 
 }

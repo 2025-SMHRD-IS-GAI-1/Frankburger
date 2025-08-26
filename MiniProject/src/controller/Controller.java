@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 import model.DAO;
@@ -54,6 +55,7 @@ public class Controller {
 
 		// 임시 입력 지워야 함
 		Scanner sc = new Scanner(System.in);
+		Random rd = new Random();
 		while (true) {
 			// 메뉴 출력
 			int input = view.showMenu();
@@ -213,6 +215,11 @@ public class Controller {
 								}
 							} else if (event.equals("낚시터")) {
 								while (true) {
+									// 1 ~ 2
+									int weather = rd.nextInt(2) + 1;
+
+									view.showWeather(weather);
+									
 									int menu4 = view.showFishingMenu();
 									if (menu4 == 1) {
 										// 낚시하기
@@ -225,7 +232,7 @@ public class Controller {
 
 										boolean isHit = view.hit(loginVO);
 										if (isHit) {
-											HashMap<String, String> hm = view.fishing();
+											HashMap<String, String> hm = view.fishing(weather);
 
 											String fishSizeName = hm.get("물고기크기");
 											String isSuccess = hm.get("성공실패");
