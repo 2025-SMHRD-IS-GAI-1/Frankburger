@@ -3,7 +3,6 @@ package controller;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Random;
-import java.util.Map.Entry;
 
 import model.DAO;
 import model.MemberVO;
@@ -24,40 +23,27 @@ public class Controller {
 		this.dao = dao;
 	}
 
-	// [1] 로그인 [2] 회원가입 [3] 종료
-	// [1]- [1] 상 [2] 하 [3] 좌 [4] 우 [5] 상태출력 [6] 종료
-	// [1]- [1]~[4]
-	// 맵 출력
-	// 상점 만남 : [1]미끼사기 [2]낚시대 구매 [3]종료 >>
-	// 보유금액 : ???원
-	// [1]- [2]-
-	// 1. 대나무낚시대 : 1000원
-	// 2. ? 낚시대 : 10000원
-	// 입력 >>
-	// 낚시터 만남 : [1]낚시하기 [2] 확률보기 [3]종료
-	// [1]- [5]-
-	// 미끼 : 10개 , 포인트 : 10점, 보유금액 : 100원, 낚시대 : 대나무낚시대
 	public void run() {
 
 		while (true) {
 			// 메뉴 출력
 			String menu = view.showMenu();
-			
-			if(menu.equals("1")) {
+
+			if (menu.equals("1")) {
 				handleLogin();
-			} else if(menu.equals("2")) {
+			} else if (menu.equals("2")) {
 				int row = dao.join(view.showJoin());
 				view.showInfo(row, "회원가입"); // 성공/실패 출력(view)
-			} else if(menu.equals("3")) {
+			} else if (menu.equals("3")) {
 				break;
 			} else {
 				view.wrongInput();
 			}
- 			
+
 		}
 
 	}
-	
+
 	private void handleLogin() {
 		MemberVO loginVO = dao.login(view.showLogin());
 		if (loginVO != null) {
@@ -67,9 +53,9 @@ public class Controller {
 			view.showLoginFail();
 		}
 	}
-	
+
 	private void startGame(MemberVO loginVO) {
-		
+
 		String[][] map = { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", "FISH_1", " ", " ", " ", " ", " " },
@@ -84,7 +70,7 @@ public class Controller {
 		int x = 4;
 		int y = 4;
 		Random rd = new Random();
-		
+
 		while (true) {
 			// 1. 뷰에게 현재 맵 상태를 출력하라고 요청
 			view.printMap(map, x, y);
@@ -109,7 +95,12 @@ public class Controller {
 			} else if (dir.equals("1")) { // 상태출력
 				view.printStatus(loginVO);
 			} else if (dir.equals("2")) { // 저장
-				dao.Save(loginVO);
+				int v = dao.save(loginVO);
+				if(v == 1) {
+					view.saveDB();
+				} else {
+					view.nsaveDB();
+				}
 				continue;
 			} else if (dir.equals("3")) { // 게임 종료 선택
 				String exitMenu = view.RealQuitMsg(); // 메시지 출력
@@ -118,11 +109,11 @@ public class Controller {
 					view.Real();
 					return;
 				} else if (exitMenu.equals("2")) { // 취소
-					
+
 				} else {
 					view.wrongInput(); // 잘못 입력 시 메시지
 				}
-				
+
 				continue; // ← 중요! 아래 else(NoNum)로 안 내려가게
 			}
 
@@ -147,16 +138,16 @@ public class Controller {
 
 		}
 	}
-	
+
 	private void handleStore(MemberVO loginVO) {
 		while (true) {
 			view.printStatus(loginVO);
 			String storeMenu = view.showStoreMenu();
 			if (storeMenu.equals("1")) {
 				// 미끼 사는거
-				buyBait(loginVO);
+				butBait(loginVO);
 			} else if (storeMenu.equals("2")) {
-				// [2]낚시대 구매*****25일 6시23분
+				// [2]낚시대 구매
 				buyRod(loginVO);
 			} else if (storeMenu.equals("3")) {
 				break;
@@ -165,8 +156,8 @@ public class Controller {
 			}
 		}
 	}
-	
-	private void buyBait(MemberVO loginVO) {
+
+	private void butBait(MemberVO loginVO) {
 		int count = view.buybait();
 
 		if (loginVO.getGold() - (25 * count) >= 0) {
@@ -177,12 +168,11 @@ public class Controller {
 			view.NoGold();
 		}
 	}
-	
+
 	private void buyRod(MemberVO loginVO) {
 		view.showRodList(dao.getRodList());
 		int rod = view.buyRod();
 		RodVO rodVO = null;
-		//// 여기
 		if (rod == 1) {
 			// 대나무 낚시대
 			if (loginVO.getRodid() == 1) {
@@ -250,16 +240,22 @@ public class Controller {
 		}
 
 		// 미끼수가 0 이고 gold가 25보다 적을때 배드엔딩
-		isBadEnding(loginVO);
-		
+		int bait = loginVO.getBait();
+		int gold = loginVO.getGold();
+
+		if (bait == 0 && gold < 25) {
+			dao.initialPoint(loginVO);
+			view.showBadEnding();
+			System.exit(0);
+		}
+
 	}
-	
 
 	private void handleFishing(MemberVO loginVO, String event, Random rd) {
 		while (true) {
-			
+
 			LinkedHashMap<String, Integer> fishChances = setFishChances(event);
-			
+
 			// 1 ~ 2
 			int weather = rd.nextInt(2) + 1;
 
@@ -268,8 +264,8 @@ public class Controller {
 			String fishingMenu = view.showFishingMenu();
 			if (fishingMenu.equals("1")) {
 				// 낚시하기
-				doHit(loginVO, fishChances, weather);
-				
+				doFishing(loginVO, fishChances, weather);
+
 			} else if (fishingMenu.equals("2")) {
 				// 낚시터 확률보기
 				view.getFishingSpotInfo(fishChances);
@@ -287,44 +283,20 @@ public class Controller {
 			}
 
 			// 미끼수가 0 이고 gold가 25보다 적을때 배드엔딩
-			isBadEnding(loginVO);
-		}
-	}
+			int bait = loginVO.getBait();
+			int gold = loginVO.getGold();
 
-	private void doHit(MemberVO loginVO, LinkedHashMap<String, Integer> fishChances, int weather) {
-		// 남은 미끼가 있는지 판단
-		if (loginVO.getBait() <= 0) {
-			view.alertBuyBait();
-			return;
+			if (bait == 0 && gold < 25) {
+				dao.initialPoint(loginVO);
+				view.showBadEnding();
+				System.exit(0);
+			}
 		}
-		
-		int rodId = loginVO.getRodid();
-		int length = 4;
-		
-		if (rodId == 1) {
-			length = 4;
-		} else if (rodId == 2) {
-			length = 5;
-		} else if (rodId == 3) {
-			length = 6;
-		} else if (rodId == 4) {
-			length = 15;
-		}
-
-		boolean isHit = view.hit(length);
-		
-		if (isHit) {
-			doFishing(loginVO, fishChances, weather);
-		} else {
-			view.hitFail();
-			loginVO.setBait(loginVO.getBait() - 1);
-		}
-		
 	}
 
 	private LinkedHashMap<String, Integer> setFishChances(String event) {
 		LinkedHashMap<String, Integer> fishChances = new LinkedHashMap<String, Integer>();
-		
+
 		int SChance = 0;
 		int MChance = 0;
 		int LChance = 0;
@@ -348,98 +320,55 @@ public class Controller {
 		fishChances.put("M", MChance);
 		fishChances.put("L", LChance);
 		fishChances.put("Boss", BossChance);
-		
+
 		return fishChances;
 	}
-	
+
 	private void doFishing(MemberVO loginVO, LinkedHashMap<String, Integer> fishChances, int weather) {
-		Random rd = new Random();
-
-		int SChance = fishChances.get("S");
-		int MChance = fishChances.get("M");
-		int LChance = fishChances.get("L");
-		int BossChance = fishChances.get("Boss");
-		String flag = "fail";
-
-		// 1 ~ 100 사이 랜덤 뽑기
-		int rand = rd.nextInt(100) + 1;
-
-		String sizeName = "꽝";
-		int cumulative = 0;
-
-		for (Entry<String, Integer> entry : fishChances.entrySet()) {
-			cumulative += entry.getValue();
-			if (rand <= cumulative) {
-				sizeName = entry.getKey();
-				break;
-			}
+		// 남은 미끼가 있는지 판단
+		if (loginVO.getBait() <= 0) {
+			view.alertBuyBait();
+			return;
 		}
-		
-		// 기본 확률표 (맑은 날 기준)
-		HashMap<String, Integer> baseProb = new HashMap<>();
-		baseProb.put("S", 100);
-		baseProb.put("M", 50);
-		baseProb.put("L", 25);
-		baseProb.put("Boss", 10);
 
-		// 날씨에 따라 확률 조정
-		double weatherFactor = (weather == 1) ? 1.0 : 0.8; // 맑음=1.0, 폭우=0.8
+		boolean isHit = view.hit(loginVO);
+		if (isHit) {
+			HashMap<String, String> hm = view.fishing(weather, fishChances);
 
-		if (!sizeName.equals("꽝")) {
-			Integer chance = baseProb.get(sizeName);
+			String fishSizeName = hm.get("물고기크기");
+			String isSuccess = hm.get("성공실패");
+			int gold = 0;
+			int point = 0;
 
-			if (chance != null) {
-				int adjustedChance = (int) Math.round(chance * weatherFactor);
-				int roll = rd.nextInt(100) + 1; // 1~100
-				if (roll <= adjustedChance) {
-					flag = "success";
+			if (isSuccess.equals("success")) {
+				if (fishSizeName.equals("S")) {
+					gold = 100;
+					point = 10;
+
+				} else if (fishSizeName.equals("M")) {
+					gold = 120;
+					point = 25;
+				} else if (fishSizeName.equals("L")) {
+					gold = 150;
+					point = 60;
+				} else {
+					gold = 5000;
+					point = 500;
 				}
-			}
-		}
-		
-		HashMap<String, String> hm = view.fishing(sizeName, flag);
-
-		String fishSizeName = hm.get("물고기크기");
-		String isSuccess = hm.get("성공실패");
-		int gold = 0;
-		int point = 0;
-
-		if (isSuccess.equals("success")) {
-			if (fishSizeName.equals("S")) {
-				gold = 100;
-				point = 10;
-
-			} else if (fishSizeName.equals("M")) {
-				gold = 120;
-				point = 25;
-			} else if (fishSizeName.equals("L")) {
-				gold = 150;
-				point = 60;
+				view.fishingSuccess(fishSizeName);
+				loginVO.setGold(loginVO.getGold() + gold);
+				loginVO.setPoint(loginVO.getPoint() + point);
+				loginVO.setBait(loginVO.getBait() - 1);
 			} else {
-				gold = 5000;
-				point = 500;
+				loginVO.setBait(loginVO.getBait() - 1);
+				view.fishingFail(fishSizeName);
 			}
-			loginVO.setGold(loginVO.getGold() + gold);
-			loginVO.setPoint(loginVO.getPoint() + point);
-			loginVO.setBait(loginVO.getBait() - 1);
-			view.fishingSuccess(fishSizeName);
+			view.showFishingStatus(loginVO);
 		} else {
+			view.hitFail();
 			loginVO.setBait(loginVO.getBait() - 1);
-			view.fishingFail(fishSizeName);
 		}
-		view.showFishingStatus(loginVO);
-		
-	}
-	
-	private void isBadEnding(MemberVO loginVO) {
-		int bait = loginVO.getBait();
-		int gold = loginVO.getGold();
 
-		if (bait == 0 && gold < 25) {
-			dao.initialPoint(loginVO);
-			view.showBadEnding();
-			System.exit(0);
-		}
 	}
-	
+
 }

@@ -8,224 +8,215 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DAO {
-   // Model 역할
 
-   // 필드 영역(메서드에서 공통으로 사용하는 객체를 필드로 빼줌)
-   private PreparedStatement psmt = null;
-   private Connection conn = null;
-   ResultSet rs = null;
+	// 필드 영역
+	private PreparedStatement psmt = null;
+	private Connection conn = null;
+	ResultSet rs = null;
 
-   // 메서드 영역
-   // 드라이버 동적로딩 ~ DB연결을 getConn()이라는 하나의 메서드로 처리
-   private void getConn() {
+	private void getConn() {
 
-      try {
-         Class.forName("oracle.jdbc.driver.OracleDriver");
-         String url = "jdbc:oracle:thin:@project-db-cgi.smhrd.com:1524:xe";
-         String user = "CGI_25IS_GA_P1_3";
-         String password = "smhrd3";
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			String url = "jdbc:oracle:thin:@project-db-cgi.smhrd.com:1524:xe";
+			String user = "CGI_25IS_GA_P1_3";
+			String password = "smhrd3";
 
-         conn = DriverManager.getConnection(url, user, password);
-         // conn : Java와 DB 사이의 통로를 열어줌
+			conn = DriverManager.getConnection(url, user, password);
 
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-   }
+	}
 
-   // 자원 반납하는 메서드
-   private void getClose() {
+	// 자원 반납하는 메서드
+	private void getClose() {
 
-      try {
-         if (rs != null) {
-            rs.close();
-         }
-         if (psmt != null) {
-            psmt.close();
-         }
-         if (conn != null) {
-            conn.close();
-         }
-      } catch (SQLException e) {
-         e.printStackTrace();
-      }
+		try {
+			if (rs != null) {
+				rs.close();
+			}
+			if (psmt != null) {
+				psmt.close();
+			}
+			if (conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-   }
+	}
 
-   // 1. 로그인 메서드 생성
-   // 매개변수를 VO 자체로 넣어버리면 일일이 집어넣을 필요 x
-   public MemberVO login(MemberVO mvo) {
-      // 로그인 한 사용자의 비밀번호를 뺀 나머지 모든 정보 리턴
-      MemberVO loginVO = null;
+	// 1. 로그인 메서드 생성
+	public MemberVO login(MemberVO mvo) {
 
-      try {
-         getConn();
+		MemberVO loginVO = null;
 
-         String sql = "SELECT * FROM MEMBER WHERE MEMBER_ID = ? AND PW = ?";
+		try {
+			getConn();
 
-         psmt = conn.prepareStatement(sql);
-         // psmt : sql문을 담아서 DB에 보내줌
+			String sql = "SELECT * FROM MEMBER WHERE MEMBER_ID = ? AND PW = ?";
 
-         // ? 인자 채워주기
-         psmt.setString(1, mvo.getMemberId());
-         psmt.setString(2, mvo.getPw());
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, mvo.getMemberId());
+			psmt.setString(2, mvo.getPw());
 
-         rs = psmt.executeQuery();
+			rs = psmt.executeQuery();
 
-         if (rs.next()) {
-            // 로그인 성공 → rs에서 꺼낸 값으로 MemberVO 채우기
-            loginVO = new MemberVO(rs.getString("MEMBER_ID"), rs.getString("PW"), rs.getString("NAME"),
-                  rs.getInt("ROD_ID"), rs.getInt("GOLD"), rs.getInt("POINT"), rs.getInt("BAIT"));
-         }
+			if (rs.next()) {
+				// 로그인 성공 → rs에서 꺼낸 값으로 MemberVO 채우기
+				loginVO = new MemberVO(rs.getString("MEMBER_ID"), rs.getString("PW"), rs.getString("NAME"),
+						rs.getInt("ROD_ID"), rs.getInt("GOLD"), rs.getInt("POINT"), rs.getInt("BAIT"));
+			}
 
-      } catch (Exception e) {
-         e.printStackTrace();
-      } finally {
-         getClose();
-      }
-      return loginVO;
-   }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			getClose();
+		}
+		return loginVO;
+	}
 
-   // 회원가입 메소드
-   public int join(MemberVO mvo) {
+	// 회원가입 메소드
+	public int join(MemberVO mvo) {
 
-      int row = 0;
+		int row = 0;
 
-      try {
-         getConn();
+		try {
+			getConn();
 
-         String sql = "INSERT INTO MEMBER(MEMBER_ID, PW, NAME) VALUES(?, ?, ?)";
+			String sql = "INSERT INTO MEMBER(MEMBER_ID, PW, NAME) VALUES(?, ?, ?)";
 
-         psmt = conn.prepareStatement(sql);
+			psmt = conn.prepareStatement(sql);
 
-         psmt.setString(1, mvo.getMemberId());
-         psmt.setString(2, mvo.getPw());
-         psmt.setString(3, mvo.getName());
+			psmt.setString(1, mvo.getMemberId());
+			psmt.setString(2, mvo.getPw());
+			psmt.setString(3, mvo.getName());
 
-         row = psmt.executeUpdate();
+			row = psmt.executeUpdate();
 
-      } catch (Exception e) {
-         e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 
-      } finally {
-         getClose();
-      }
-      return row;
-   }
-   // 저장 메소드
-      public void Save(MemberVO mvo) {
+		} finally {
+			getClose();
+		}
+		return row;
+	}
 
-         int row = 0;
+	// 저장 메소드
+	public int save(MemberVO mvo) {
 
-         try {
-            getConn();
-            String sql = "UPDATE MEMBER SET GOLD=?, POINT=?, BAIT=?, ROD_ID=? WHERE MEMBER_ID=?";
+		int row = 0;
 
-            psmt = conn.prepareStatement(sql);
+		try {
+			getConn();
+			String sql = "UPDATE MEMBER SET GOLD=?, POINT=?, BAIT=?, ROD_ID=? WHERE MEMBER_ID=?";
 
-            psmt.setInt(1, mvo.getGold());
-            psmt.setInt(2, mvo.getPoint());
-            psmt.setInt(3, mvo.getBait());
-            psmt.setInt(4, mvo.getRodid());
-            psmt.setString(5, mvo.getMemberId());
+			psmt = conn.prepareStatement(sql);
 
-            row = psmt.executeUpdate();
-            
-            conn.commit();
-            
-            if(row > 0) System.out.println("DB 저장 완료!");
-              else System.out.println("저장 실패...");
+			psmt.setInt(1, mvo.getGold());
+			psmt.setInt(2, mvo.getPoint());
+			psmt.setInt(3, mvo.getBait());
+			psmt.setInt(4, mvo.getRodid());
+			psmt.setString(5, mvo.getMemberId());
 
-         } catch (SQLException e) {
-            e.printStackTrace();
-         } finally {
-            getClose();
-         }
+			row = psmt.executeUpdate();
 
-      }
+			conn.commit();
 
-   // 낚시대 전체 조회
-   // 낚시대 전체 조회 *****25일 6시23분
-   public ArrayList<RodVO> getRodList() {
-      ArrayList<RodVO> list = new ArrayList<>();
-      try {
-         getConn();
 
-         String sql = "SELECT ROD_ID, NAME, PRICE FROM ROD";
-         psmt = conn.prepareStatement(sql);
-         rs = psmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			getClose();
+		}
+		
+		return row;
 
-         while (rs.next()) {
-            // RodVO는 생성자 값 아무거나 넣고, set으로 채움
-            RodVO rvo = new RodVO(0, "", 0);
-            rvo.setRodid(rs.getInt("ROD_ID"));
-            rvo.setName(rs.getString("NAME"));
-            rvo.setPrice(rs.getInt("PRICE"));
-            list.add(rvo);
-         }
+	}
 
-      } catch (Exception e) {
-         e.printStackTrace();
-      } finally {
-         getClose();
-      }
-      return list;
-   }
+	// 낚시대 전체 조회
+	public ArrayList<RodVO> getRodList() {
+		ArrayList<RodVO> list = new ArrayList<>();
+		try {
+			getConn();
 
-   //
-   public RodVO selectByRodId(MemberVO mvo) {
-      RodVO rvo = new RodVO();
+			String sql = "SELECT ROD_ID, NAME, PRICE FROM ROD";
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
 
-      try {
-         getConn();
+			while (rs.next()) {
+				// RodVO는 생성자 값 아무거나 넣고, set으로 채움
+				RodVO rvo = new RodVO(0, "", 0);
+				rvo.setRodid(rs.getInt("ROD_ID"));
+				rvo.setName(rs.getString("NAME"));
+				rvo.setPrice(rs.getInt("PRICE"));
+				list.add(rvo);
+			}
 
-         String sql = "SELECT R.NAME FROM MEMBER M INNER JOIN ROD R " + "ON(M.ROD_ID = R.ROD_ID) "
-               + "WHERE M.MEMBER_ID = ?";
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			getClose();
+		}
+		return list;
+	}
 
-         psmt = conn.prepareStatement(sql);
-         psmt.setString(1, mvo.getMemberId());
-         // psmt : sql문을 담아서 DB에 보내줌
+	//
+	public RodVO selectByRodId(MemberVO mvo) {
+		RodVO rvo = new RodVO();
 
-         rs = psmt.executeQuery();
+		try {
+			getConn();
 
-         if (rs.next()) {
-            // 로그인 성공 → rs에서 꺼낸 값으로 MemberVO 채우기
-            rvo.setName(rs.getString("NAME"));
-         }
+			String sql = "SELECT R.NAME FROM MEMBER M INNER JOIN ROD R " + "ON(M.ROD_ID = R.ROD_ID) "
+					+ "WHERE M.MEMBER_ID = ?";
 
-      } catch (Exception e) {
-         e.printStackTrace();
-      } finally {
-         getClose();
-      }
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, mvo.getMemberId());
 
-      return rvo;
-   }
+			rs = psmt.executeQuery();
 
-   // 엔딩시 골드, 미끼수 초기화
-   public void initialPoint(MemberVO mvo) {
+			if (rs.next()) {
 
-      try {
-         getConn();
+				rvo.setName(rs.getString("NAME"));
+			}
 
-         String sql = "UPDATE MEMBER SET GOLD = 0, BAIT = 10 WHERE MEMBER_ID = ?";
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			getClose();
+		}
 
-         psmt = conn.prepareStatement(sql);
+		return rvo;
+	}
 
-         psmt.setString(1, mvo.getMemberId());
+	// 엔딩시 골드, 미끼수 초기화
+	public void initialPoint(MemberVO mvo) {
 
-         psmt.executeUpdate();
+		try {
+			getConn();
 
-         conn.commit();
+			String sql = "UPDATE MEMBER SET GOLD = 0, BAIT = 10 WHERE MEMBER_ID = ?";
 
-      } catch (Exception e) {
-         e.printStackTrace();
+			psmt = conn.prepareStatement(sql);
 
-      } finally {
-         getClose();
-      }
+			psmt.setString(1, mvo.getMemberId());
 
-   }
+			psmt.executeUpdate();
+
+			conn.commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			getClose();
+		}
+
+	}
 
 }

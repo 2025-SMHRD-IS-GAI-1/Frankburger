@@ -29,54 +29,85 @@ public class View {
 		System.out.println("           ╰─────╯   ╰─────╯   ╰─────╯");
 		System.out.println("            로그인     회원가입     종료");
 		System.out.println();
-		// System.out.println("════════════════════════════════════════════════");
+		 System.out.println("════════════════════════════════════════════════");
 		System.out.println("              🎣 번호를 입력해주세요 !🎣");
 		System.out.print("                        ");
 		String menu = sc.next();
-//		System.out.println();
-//		System.out.println("        🐠      🐟      🐡      🐟      🐠");
 		return menu;
 	}
 
+	// 메인메뉴 출력문
 	public String showMapMenu() {
-		System.out.print("[w] 상 [s] 하 [a] 좌 [d] 우 [1]현재상태 [2]저장 [3]종료 >>");
+		System.out.println();
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("                  🎮 조작 안내 🎮");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("     ↑  w : 위로 이동    【  ←  a : 왼쪽 이동");
+		System.out.println("     ↓  s : 아래로 이동    】 →  d : 오른쪽 이동");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println();
+		System.out.println("                  📋 게임 메뉴 📋");
+		System.out.println();
+		System.out.println("           ╭─────╮   ╭─────╮   ╭─────╮");
+		System.out.println("           │  1  │   │  2  │   │  3  │");
+		System.out.println("           ╰─────╯   ╰─────╯   ╰─────╯");
+		System.out.println("            현재상태     저장       종료");
+		System.out.println();
+		System.out.println("════════════════════════════════════════════════");
+		System.out.print("             👉 메뉴 번호를 입력하세요: ");
 		String input = sc.next();
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println(); // 전체 화면 창에 맞는 여백 마지막단
+
 		return input;
 	}
 
 	public String showStoreMenu() {
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("                    🛒 상점 🛒");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("            🎣 필요한 아이템을 구매하세요! 🎣");
 		System.out.println();
-	    System.out.println("      ══════════════════════════════════════════");
-	    System.out.println("                 🏪 FISHING SHOP 🏪");
-	    System.out.println("      ══════════════════════════════════════════");
-	    System.out.println();
-	    System.out.println("            ═══════════════════════════════");
-	    System.out.println("               1️ 미끼 구매                  ");
-	    System.out.println("               2 낚시대 구매                ");
-	    System.out.println("               3 나가기                      ");
-	    System.out.println("            ═══════════════════════════════");
-	    System.out.println();
-	    System.out.println("              🎣 원하시는 번호를 입력해주세요! 🎣");
-	    System.out.print("                        ");
-	    
+		System.out.println("           ╭─────╮   ╭─────╮   ╭─────╮");
+		System.out.println("           │  1  │   │  2  │   │  3  │");
+		System.out.println("           ╰─────╯   ╰─────╯   ╰─────╯");
+		System.out.println("           미끼 구매   낚시대 구매   나가기");
+		System.out.println();
+		System.out.println("════════════════════════════════════════════════");
+		System.out.print("             👉 메뉴 번호를 입력하세요: ");
 		String input = sc.next();
-	    
-	    return input; 
-	}
+		System.out.println("════════════════════════════════════════════════");
 
-	public String showFishingMenu() {
-		System.out.print("[1]낚시하기 [2]확률보기 [3]나가기 >>");
-		String input = sc.next();
 		return input;
 	}
 
-	// 로그인 출력하는 메서드
 	public MemberVO showLogin() {
-		System.out.println("==== 로그인 ====");
-		System.out.print("ID 입력 : ");
+		System.out.println();
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("                   🔒 로그인 🔒");
+		System.out.println("════════════════════════════════════════════════");
+
+		System.out.println();
+
+		// 아이디 입력
+		System.out.print("            🔑 아이디를 입력해주세요: ");
 		String id = sc.next();
-		System.out.print("비밀번호 입력 : ");
+		System.out.println();
+
+		// 비밀번호 입력
+		System.out.print("            🔒 비밀번호를 입력해주세요: ");
 		String pw = sc.next();
+		System.out.println();
+
 		MemberVO mvo = new MemberVO();
 		mvo.setMemberId(id); // 입력받은 ID 저장
 		mvo.setPw(pw); // 입력받은 PW 저장
@@ -87,25 +118,69 @@ public class View {
 	// 로그인 성공 여부 출력하는 메서드
 	public void statusLogin(MemberVO loginVO) {
 		if (loginVO != null) {
-			System.out.println("로그인 성공");
-			System.out.println(loginVO.getName() + "님 환영합니다!");
-			// loginVO
-			// 사용자냐 관리자냐에 따라 호출되는게 다름(오버라이딩 했으니까)
+			System.out.println("════════════════════════════════════════════════");
+			System.out.println("                 🎉 로그인 성공! 🎉");
+			System.out.println("════════════════════════════════════════════════");
+			System.out.println("        🐡₊‧.°.                          🐟𓂃⊹ ִֶָ");
+			System.out.println("                ✨ " + loginVO.getName() + " 님, 환영합니다! ✨");
+			System.out.println("             오늘도 큰 물고기를 낚아보세요! ");
+			System.out.println("  🐠=~                                🐡.·˖*·⑅♡");
+			System.out.println("            ◁:0€             🐟~-  ");
+			System.out.println("════════════════════════════════════════════════");
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println();
+
 		} else {
-			System.out.println("로그인 실패");
+			    System.out.println("════════════════════════════════════════════════");
+		        System.out.println("                 🚫 로그인 실패 🚫");
+		        System.out.println("════════════════════════════════════════════════");
+		        System.out.println("        🔑 아이디 또는 비밀번호를 확인해주세요!");
+		        System.out.println("           🎣 다시 로그인 시도해보세요! 🎣");
+		        System.out.println("════════════════════════════════════════════════");
 		}
 	}
 
 	// 회원가입 출력하는 메서드
 	public MemberVO showJoin() {
+		System.out.println();
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("                 📝 회원가입 📝");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println();
 
-		System.out.println("==== 회원가입 ====");
-		System.out.print("ID 입력 : ");
+		// 아이디 입력
+		System.out.print("           🔑 아이디를 입력해주세요: ");
 		String id = sc.next();
-		System.out.print("비밀번호 입력 : ");
+		System.out.println();
+		// 비밀번호 입력
+		System.out.print("           🔒 비밀번호를 입력해주세요: ");
 		String pw = sc.next();
-		System.out.print("이름 입력 : ");
+		System.out.println();
+		// 이름 입력
+		System.out.print("           🧑 이름을 입력해주세요: ");
 		String name = sc.next();
+		System.out.println();
 
 		MemberVO mvo = new MemberVO();
 		mvo.setMemberId(id);
@@ -118,38 +193,36 @@ public class View {
 	// 회원가입 성공 여부 출력 메소드
 	public void showInfo(int row, String msg) {
 		if (row == 1) {
-			System.out.println(msg + " 성공!");
-		} else { // msg: "회원가입"
-			System.out.println(msg + " 실패!");
+			System.out.println();
+			System.out.println(msg + "           🎉 회원가입이 완료되었습니다! 🎉");
+		} else {
+			System.out.println();
+			System.out.println(msg + "          🚫 회원가입에 실패하셨습니다! 🚫");
+
 		}
 	}
 
 	// 맵 출력
-		public void printMap(String[][] map, int x, int y) {
-			for (int i = 0; i < map.length; i++) {
-				for (int j = 0; j < map[i].length; j++) {
-					if (map[i][j].startsWith("STORE_")) {
-						System.out.print("🏪");
-					} else if (map[i][j].startsWith("FISH_")) {
-						System.out.print("🎣");
-					} else if (i == x && j == y) {
-						System.out.print("🧍");
-					} else {
-						System.out.print("⬜");
-					}
-
+	public void printMap(String[][] map, int x, int y) {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				if (map[i][j].startsWith("STORE_")) {
+					System.out.print("🏪");
+				} else if (map[i][j].startsWith("FISH_")) {
+					System.out.print("🎣");
+				} else if (i == x && j == y) {
+					System.out.print("🧍");
+				} else {
+					System.out.print("⬜");
 				}
-				System.out.println();
+
 			}
+			System.out.println();
 		}
+	}
 
 	// 상태 출력
 	public void printStatus(MemberVO mvo) {
-		System.out.println();
-		System.out.println("<  현재 나의 정보  >");
-		System.out.println("  점 수 : " + mvo.getPoint());
-		System.out.println("  골 드 : " + mvo.getGold());
-		System.out.println("  미 끼 : " + mvo.getBait());
 		String rodName = "";
 		int rodId = mvo.getRodid();
 		if (rodId == 1) {
@@ -161,48 +234,143 @@ public class View {
 		} else if (rodId == 4) {
 			rodName = "다이아몬드 낚시대";
 		}
-		System.out.println("  낚시대 : " + rodName);
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("                 👤 현재 상태 👤");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println();
+		System.out.println("      🏆 점수   ➤   " + mvo.getPoint() + "   💰 소지금   ➤   " + mvo.getGold() + " G");
+		System.out.println();
+		System.out.println("   🐛 미끼   ➤   " + mvo.getBait() + "    🎣 낚시대   ➤  " + rodName);
+		System.out.println();
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println();
+		System.out.println();
 	}
 
+	// 나가기 메뉴
 	public String RealQuitMsg() {
 		System.out.println();
-		System.out.println("정말 나가시겠습니까?");
-		System.out.println("저장되지 않은 데이터는 삭제됩니다.");
-		System.out.println("[1]종료 [2]취소");
-		String answer = sc.next();
-		return answer;
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("                 😢 나가기 😢  ");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("         💾 저장되지 않은 데이터는 삭제됩니다.💾");
+		System.out.println();
+		System.out.println("           ╭─────╮       ╭─────╮");
+		System.out.println("           │  1️  │       │  2️  │");
+		System.out.println("           ╰─────╯       ╰─────╯");
+		System.out.println("             종료           취소");
+		System.out.println();
+		System.out.println("             👉 번호를 입력해주세요! ");
+		System.out.print("                      "); // 커서 위치 조정
+		return null;
 	}
 
-	// 정말 나가시겠습니까?
+	// 나가기 출력
 	public void Real() {
-		System.out.println("게임을 종료하고 로그인 화면으로 돌아갑니다.");
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("                 🐟 로그아웃 🐟");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("       🐡₊‧.°.                          🐟𓂃⊹ ִֶָ");
+		System.out.println("             🐟 오늘의 낚시를 마칩니다! 🎣");
+		System.out.println("  🐠=~                                🐡.·˖*·⑅♡");
+		System.out.println("            ◁:0€             🐟~-  ");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+
 	}
+
+	public String showFishingMenu() {
+		System.out.println("           .      🐡    ~                 o      ");
+		System.out.println("   .                        ~        .          ");
+		System.out.println("   .                        ~        .         ");
+		System.out.println("           o               .              ~   ");
+		System.out.println("   .           ~                      .        ");
+		System.out.println("          ~                 .            ~      ");
+		System.out.println("                                ~               ~");
+		System.out.println("        🐠          .                o           ");
+		System.out.println("           ~                 .                   ");
+		System.out.println("   o                .          ~              .  ");
+		System.out.println("           .                                      ");
+		System.out.println("           .          ~                 o       ");
+		System.out.println("   .                        ~        .           ");
+		System.out.println("           o               .              ~   ");
+		System.out.println("   .           ~                      .        ");
+		System.out.println("          ~                 .              ~      ");
+		System.out.println("   .                    o                       ");
+		System.out.println("           .              .     🐡     ~       o  ");
+		System.out.println("     ~              .   .                         ");
+		System.out.println("          . o                                  ");
+		System.out.println("   .   🐙             .          ~           .   ");
+		System.out.println("                 🐟             o                ~ ");
+		System.out.println("                                              ");
+		System.out.println("════════════════════════════════════════════════"); 
+		System.out.println(" 	           🎣 낚시터 🎣"); 
+		System.out.println("════════════════════════════════════════════════"); 
+		System.out.println("            ╭─────╮ ╭─────╮ ╭─────╮"); 
+		System.out.println("            │  1️  │ │  2️  │ │  3️  │"); 
+		System.out.println("            ╰─────╯ ╰─────╯ ╰─────╯"); 
+		System.out.println("             낚시하기  확률보기  나가기"); 
+		System.out.println(); 
+		System.out.println("             🎣 번호를 입력해주세요! 🎣"); 
+		System.out.print("                        "); // 커서 위치 조정 
+		String input = sc.next(); 
+		return input; 
+		}
+	
 
 	// 미끼 사기 출력
 	public int buybait() {
-		 System.out.println();
-		    System.out.println("════════════════════════════════════════════════");
-		    System.out.println("            🦐 새우 미끼 : 25 Gold");
-		    System.out.println("════════════════════════════════════════════════");
-		    System.out.print("👉 몇 개를 구매하시겠습니까? : ");
-			int count = sc.nextInt();
+		System.out.println();
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("            🦐 새우 미끼 : 25 Gold");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.print("           👉 몇 개를 구매하시겠습니까? : ");
+		int count = sc.nextInt();
 
-		    return count;
+		return count;
 	}
 
-	// 미끼 사고 인사하기 - 수호가 추가
-
+	// 미끼 사고 인사하기
 	public void bye(int a) {
 		System.out.println("미끼를" + a + "개 사셨습니다");
 		System.out.println(a * 25 + "골드를 사용하셨습니다");
 	}
 
-	// 돈이 부족합니다 -- 수호가 추가
-	public void NoGold() {
-		System.out.println("돈이 없습니다 돈을 더 벌어오세요!");
-	}
+	// 골드 부족
+    public void NoGold() {
+        System.out.println("════════════════════════════════════════════════");
+        System.out.println("                 💰 소지금 부족! 💰");
+        System.out.println("          더 많은 골드를 벌어서 구매해보세요 ");
+        System.out.println("════════════════════════════════════════════════");
+    }
 
-	// 낚시대 구매 출력-- 수호가 추가 근데 DB로 해야하나?
+	// 낚시대 구매 출력
 	public int buyRod() {
 		int rod = sc.nextInt();
 		return rod;
@@ -210,21 +378,34 @@ public class View {
 	}
 
 	public void printBuyRod(int rowId) {
-		if (rowId == 1) {// **********25일 변경
-			System.out.println("대나무 낚시대를 구매하셨습니다");
+		if (rowId == 1) {
+			 System.out.println("════════════════════════════════════════════════");
+			 System.out.println("          🎣 대나무 낚시대를 구매하셨습니다!");
+			 System.out.println("════════════════════════════════════════════════");
 		}
 
 		else if (rowId == 2) {
-			System.out.println("다이소 낚시대를 구매하셨습니다");
-			System.out.println("1000골드를 사용하셨습니다");
+			 System.out.println("════════════════════════════════════════════════");
+			 System.out.println("          🎣 다이소 낚시대를 구매하셨습니다!");
+			 System.out.println();
+			 System.out.println("            💰 1000 골드를 사용하셨습니다.");
+			 System.out.println("════════════════════════════════════════════════");
 		} else if (rowId == 3) {
-			System.out.println("카본 낚시대를 구매하셨습니다");
-			System.out.println("3000골드를 사용하셨습니다");
+			 System.out.println("════════════════════════════════════════════════");
+			System.out.println("           🎣 카본 낚시대를 구매하셨습니다!");
+			System.out.println();
+            System.out.println("            💰 3000 골드를 사용하셨습니다.");
+            System.out.println("════════════════════════════════════════════════");
 		} else if (rowId == 4) {
-			System.out.println("다이아몬들 낚시대를 구매하셨습니다");
-			System.out.println("10000골드를 사용하셨습니다");
+			 System.out.println("════════════════════════════════════════════════");
+			System.out.println("          🎣 다이아몬드 낚시대를 구매하셨습니다!");
+			System.out.println();
+            System.out.println("           💰 10000 골드를 사용하셨습니다.");
+            System.out.println("════════════════════════════════════════════════");
 		} else {
-			System.out.println("번호를 잘못 입력하셨습니다");
+			 System.out.println("════════════════════════════════════════════════");
+			System.out.println("            🚫 번호를 잘못 입력하셨습니다!");
+			 System.out.println("════════════════════════════════════════════════");
 		}
 	}
 
@@ -233,16 +414,26 @@ public class View {
 
 	}
 
-	public void fishingFail(String fishSizeName) {
-		System.out.println(fishSizeName + " 낚시에 실패하셨습니다.");
-	}
+	// 낚시 실패
+    public void fishingFail(String fishName) {
+        System.out.println("════════════════════════════════════════════════");
+        System.out.println("          💀 " + fishName + " 낚시에 실패했습니다! 💀");
+        System.out.println("        물고기가 도망갔어요… 다시 해봅시다! 🎣");
+        System.out.println("════════════════════════════════════════════════");
+    }
 
-	public void hitFail() {
-		System.out.println("찌 맞추기에 실패하셨습니다.");
+	// 찌 맞추기 실패
+    public void hitFail() {
+        System.out.println("════════════════════════════════════════════════");
+        System.out.println("               💥 찌 맞추기 실패! 💥");
+        System.out.println("         타이밍을 조금 더 정확히 맞춰보세요 🎣");
+        System.out.println("════════════════════════════════════════════════");
 	}
 
 	public void getFishingSpotInfo(LinkedHashMap<String, Integer> fishChances) {
-		System.out.println("물고기 등장 확률");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("               🐠 물고기 등장 확률 🐠           ");
+		System.out.println("════════════════════════════════════════════════");
 		System.out.println("┌──────┬────────┐");
 		System.out.println("│ Size │ Chance │");
 		System.out.println("├──────┼────────┤");
@@ -252,8 +443,9 @@ public class View {
 		}
 		System.out.println("└──────┴────────┘");
 
-		System.out.println();
-		System.out.println("낚을 확률");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("               🎣 낚시 확률 🎣                  ");
+		System.out.println("════════════════════════════════════════════════");
 		System.out.println("┌──────┬──────────┬────────┬──────────┐");
 		System.out.println("│ Size │ Catch %  │ Score  │ Earned W │");
 		System.out.println("├──────┼──────────┼────────┼──────────┤");
@@ -264,10 +456,13 @@ public class View {
 		System.out.println("└──────┴──────────┴────────┴──────────┘");
 	}
 
-	public void alertBuyBait() {
-		System.out.println("미끼가 부족합니다. 상점에 가서 사오세요.");
-
-	}
+	  // 상점 안내
+    public void alertBuyBait() {
+        System.out.println("════════════════════════════════════════════════");
+        System.out.println("              🐛 미끼가 부족합니다! 🐛");
+        System.out.println("          🏪 상점에 가서 미끼를 구매해주세요!");
+        System.out.println("════════════════════════════════════════════════");
+    }
 
 	public boolean hit(MemberVO loginVO) {
 		int rodId = loginVO.getRodid();
@@ -289,10 +484,11 @@ public class View {
 			targetEnd = 7;
 		}
 
+
 		while (true) {
 			// 바 그리기
-
-			StringBuilder sb = new StringBuilder("=== 엔터 입력으로 타이밍 맞추기 ===");
+			
+			StringBuilder sb = new StringBuilder("═════════ Press Enter ═════════");
 			sb.append("\n");
 			for (int i = 0; i < barLength; i++) {
 				if (i == middlePoint)
@@ -342,10 +538,15 @@ public class View {
 				if (System.in.available() > 0) { // 키 입력 대기 확인
 					String input = sc.nextLine();
 					if (middlePoint >= targetStart && middlePoint <= targetEnd) {
-						System.out.println("\n🎉 찌 맞추기 성공!");
+						System.out.println("════════════════════════════════════════════════");
+						System.out.println("                 🐟 찌 맞추기 성공!🐟");
+						System.out.println("════════════════════════════════════════════════");
 						isHit = true;
 					} else {
-						System.out.println("\n💀 찌 맞추기 실패!");
+						System.out.println("════════════════════════════════════════════════");
+				        System.out.println("               💥 찌 맞추기 실패! 💥");
+				        System.out.println("        타이밍을 조금 더 정확히 맞춰보세요 🎣");
+				        System.out.println("════════════════════════════════════════════════");
 						isHit = false;
 					}
 					break;
@@ -358,24 +559,67 @@ public class View {
 		return isHit;
 	}
 
-	public HashMap<String, String> fishing(String sizeName, String flag) {
+	public HashMap<String, String> fishing(int weather, LinkedHashMap<String, Integer> fishChances) {
 		HashMap<String, String> map = new HashMap<String, String>();
 
-		map.put("물고기크기", sizeName);
+		Random rd = new Random();
 
-		if (flag.equals("success")) {
-			System.out.println("\n🎉 " + sizeName + " 낚시 성공!");
-		} else {
-			System.out.println("\n💀 " + sizeName + " 낚시 실패!");
+		int SChance = fishChances.get("S");
+		int MChance = fishChances.get("M");
+		int LChance = fishChances.get("L");
+		int BossChance = fishChances.get("Boss");
+		String isSuccess = "fail";
+
+		// 1 ~ 100 사이 랜덤 뽑기
+		int rand = rd.nextInt(100) + 1;
+
+		String fishSizeName = "꽝";
+		int cumulative = 0;
+
+		for (Entry<String, Integer> entry : fishChances.entrySet()) {
+			cumulative += entry.getValue();
+			if (rand <= cumulative) {
+				fishSizeName = entry.getKey();
+				break;
+			}
 		}
 
-		map.put("성공실패", flag);
+		map.put("물고기크기", fishSizeName);
+
+		// 기본 확률표 (맑은 날 기준)
+		HashMap<String, Integer> baseProb = new HashMap<>();
+		baseProb.put("S", 100);
+		baseProb.put("M", 50);
+		baseProb.put("L", 25);
+		baseProb.put("Boss", 10);
+
+		// 날씨에 따라 확률 조정
+		double weatherFactor = (weather == 1) ? 1.0 : 0.8; // 맑음=1.0, 폭우=0.8
+
+		if (!fishSizeName.equals("꽝")) {
+			Integer chance = baseProb.get(fishSizeName);
+
+			if (chance != null) {
+				int adjustedChance = (int) Math.round(chance * weatherFactor);
+				int roll = rd.nextInt(100) + 1; // 1~100
+				if (roll <= adjustedChance) {
+					isSuccess = "success";
+				}
+			}
+		}
+
+		if (isSuccess.equals("success")) {
+			System.out.println("\n🎉 " + fishSizeName + " 낚시 성공!");
+		} else {
+			System.out.println("\n💀 " + fishSizeName + " 낚시 실패!");
+		}
+
+		map.put("성공실패", isSuccess);
 
 		return map;
 	}
 
 	public String eventStart(String[][] map, int x, int y) {
-		// TODO Auto-generated method stub
 		String result = null;
 
 		if (map[x][y].startsWith("STORE_")) {
@@ -388,11 +632,16 @@ public class View {
 	}
 
 	public void showLoginFail() {
-		System.out.println("로그인이 안되었습니다. 아이디와 비밀번호를 확인해주세요.");
+		    System.out.println("════════════════════════════════════════════════");
+	        System.out.println("                 🚫 로그인 실패 🚫");
+	        System.out.println("════════════════════════════════════════════════");
+	        System.out.println("        🔑 아이디 또는 비밀번호를 확인해주세요!");
+	        System.out.println("           🎣 다시 로그인 시도해보세요! 🎣");
+	        System.out.println("════════════════════════════════════════════════");
 
 	}
 
-	public void showRodList(ArrayList<RodVO> rodList) {//// 825
+	public void showRodList(ArrayList<RodVO> rodList) {
 		for (RodVO rvo : rodList) {
 			System.out.print(rvo.getRodid() + "번");
 			System.out.print("\t" + rvo.getName());
@@ -402,7 +651,7 @@ public class View {
 
 	}
 
-	public void cantBuy() {/// 825
+	public void cantBuy() {
 		System.out.println("사용하고 있는 낚시대는 구매하실 수 없습니다");
 
 	}
@@ -420,100 +669,33 @@ public class View {
 
 	public void showWeather(int weather) {
 		if (weather == 1) {
-			System.out.println(" 오늘은 맑음!!!");
+			System.out.println();
+			System.out.println("              오늘의 날씨는 맑습니다!!!");
 		} else {
-			System.out.println("폭우임 우르르쾅쾅!!");
-			System.out.println("폭우면 잡힐확률 20%감소!");
+			System.out.println();
+			System.out.println("              오늘의 날씨는 폭우입니다!!");
+			System.out.println("              (폭우시 잡힐확률 20% 감소)");
 		}
 
 	}
 
 	// 낚시후 상태 보여주기
 	public void showFishingStatus(MemberVO mvo) {
-		System.out.println("gold = " + mvo.getGold() + ", point = " + mvo.getPoint() + ", vait = " + mvo.getBait());
+		System.out.println("                  현재 상태");
+		System.out.println("           소지금 : " + mvo.getGold() + ", 점수 : " + mvo.getPoint() + ", 미끼 :" + mvo.getBait());
+		   System.out.println("════════════════════════════════════════════════");
 	}
 
 	public void wrongInput() {
 		System.out.println("잘못 입력하셨습니다. 다시 입력해 주세요.");
-		
+
 	}
-
-	public boolean hit(int length) {
-		boolean isHit = false;
-
-		int barLength = 30; // 바 길이
-		int targetStart = 0; // 성공 구간 시작
-		int targetEnd = length; // 성공 구간 끝
-		int middlePoint = barLength / 2;
-		boolean forward = true;
-
-		while (true) {
-			// 바 그리기
-
-			StringBuilder sb = new StringBuilder("=== 엔터 입력으로 타이밍 맞추기 ===");
-			sb.append("\n");
-			for (int i = 0; i < barLength; i++) {
-				if (i == middlePoint)
-					sb.append("↓");
-				else
-					sb.append(" ");
-			}
-			sb.append("\n");
-
-			sb.append("[");
-			for (int i = 0; i < barLength; i++) {
-				if (i >= targetStart && i <= targetEnd)
-					sb.append("=");
-				else
-					sb.append(" ");
-			}
-			sb.append("]");
-
-			System.out.println("\r" + sb);
-
-			// 방향 전환
-			if (forward) {
-				targetStart++;
-				targetEnd++;
-			} else {
-				targetStart--;
-				targetEnd--;
-			}
-
-			if (targetEnd == barLength - 1) {
-				forward = false;
-			}
-
-			if (targetStart == 0) {
-				forward = true;
-			}
-
-			try {
-				// 움직임 속도
-				Thread.sleep(80);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
-			// 입력 감지 (간단히 Enter로 처리)
-			try {
-				if (System.in.available() > 0) { // 키 입력 대기 확인
-					String input = sc.nextLine();
-					if (middlePoint >= targetStart && middlePoint <= targetEnd) {
-						System.out.println("\n🎉 찌 맞추기 성공!");
-						isHit = true;
-					} else {
-						System.out.println("\n💀 찌 맞추기 실패!");
-						isHit = false;
-					}
-					break;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return isHit;
+	
+	public void saveDB() {
+		System.out.println("회원 정보 저장 완료!");
+	}
+	public void nsaveDB() {
+		System.out.println("회원 정보 저장 실패!");
 	}
 
 }
