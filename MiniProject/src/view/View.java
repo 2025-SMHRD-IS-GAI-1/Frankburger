@@ -368,82 +368,25 @@ public class View {
 
 		map.put("물고기크기", fishSizeName);
 
-		// 물고기 크기에 따른 낚을 확률 정함
-		int hitRatio = 0;
+		// 기본 확률표 (맑은 날 기준)
+		HashMap<String, Integer> baseProb = new HashMap<>();
+		baseProb.put("S", 100);
+		baseProb.put("M", 50);
+		baseProb.put("L", 25);
+		baseProb.put("Boss", 10);
 
-		if (weather == 1)// 날씨 맑을 때 {
+		// 날씨에 따라 확률 조정
+		double weatherFactor = (weather == 1) ? 1.0 : 0.8; // 맑음=1.0, 폭우=0.8
+		
+		if(!fishSizeName.equals("꽝")) {
+			Integer chance = baseProb.get(fishSizeName);
 
-			
-			if (fishSizeName.equals("S")) {
-				// 100%
-				isSuccess = "success";
-			} else if (fishSizeName.equals("M")) {
-				// 50%
-				hitRatio = rd.nextInt(2) + 1;
-				if (hitRatio == 1) {
-					isSuccess = "success";
-				} else {
-					isSuccess = "fail";
-				}
-			} else if (fishSizeName.equals("L")) {
-				// 25%
-				hitRatio = rd.nextInt(4) + 1;
-				if (hitRatio == 1) {
-					isSuccess = "success";
-				} else {
-					isSuccess = "fail";
-				}
-			} else if (fishSizeName.equals("Boss")) {
-				// 10%
-				hitRatio = rd.nextInt(10) + 1;
-				if (hitRatio == 1) {
-					isSuccess = "success";
-				} else {
-					isSuccess = "fail";
-				}
-			} else {
-
-				isSuccess ="fail";
-			}
-
-		else { // weather==2 (폭우)
-			
-
-			if (fishSizeName.equals("S")) {
-				// 80%
-				hitRatio = rd.nextInt(10) + 1;
-				if (hitRatio <= 8) {
-					isSuccess = "success";
-				} else {
-					isSuccess = "fail";
-				}
-				isSuccess = "success";
-			} else if (fishSizeName.equals("M")) {
-				// 40%
-				hitRatio = rd.nextInt(10) + 1;
-				if (hitRatio <= 4) {
-					isSuccess = "success";
-				} else {
-					isSuccess = "fail";
-				}
-			} else if (fishSizeName.equals("L")) {
-				// 20%
-				hitRatio = rd.nextInt(5) + 1;
-				if (hitRatio == 1) {
-					isSuccess = "success";
-				} else {
-					isSuccess = "fail";
-				}
-			} else if (fishSizeName.equals("Boss")) {
-				// 8%
-				hitRatio = rd.nextInt(100) + 1;
-				if (hitRatio <= 8) {
-					isSuccess = "success";
-				} else {
-					isSuccess = "fail";
-				}
-			} else {
-				isSuccess = "fail";
+			if (chance != null) {
+			    int adjustedChance = (int)Math.round(chance * weatherFactor);
+			    int roll = rd.nextInt(100) + 1; // 1~100
+			    if (roll <= adjustedChance) {
+			        isSuccess = "success";
+			    }
 			}
 		}
 
