@@ -3,8 +3,10 @@ package view;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Map.Entry;
 
 import model.MemberVO;
 import model.RodVO;
@@ -24,13 +26,13 @@ public class View {
 	}
 
 	public String showMapMenu() {
-		System.out.print("[w] 상 [s] 하 [a] 좌 [d] 우 [1]현재상태 [2]저장 [4]종료");
+		System.out.print("[w] 상 [s] 하 [a] 좌 [d] 우 [1]현재상태 [2]저장 [4]종료 >>");
 		String input = sc.next();
 		return input;
 	}
 
 	public int showStoreMenu() {
-		System.out.println("[1]미끼구매 25Gold [2]낚시대구매 [3]종료 >>");
+		System.out.print("[1]미끼구매 25Gold [2]낚시대구매 [3]종료 >>");
 		int input = sc.nextInt();
 		return input;
 	}
@@ -103,9 +105,9 @@ public class View {
 	public void printMap(String[][] map, int x, int y) {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[i].length; j++) {
-				if (map[i][j].equals("S")) {
+				if (map[i][j].startsWith("STORE_")) {
 					System.out.print("🏪");
-				} else if (map[i][j].equals("F")) {
+				} else if (map[i][j].startsWith("FISH_")) {
 					System.out.print("🎣");
 				} else if (i == x && j == y) {
 					System.out.print("🧍");
@@ -145,7 +147,6 @@ public class View {
 
 	}
 
-	
 	// 미끼 사고 인사하기 - 수호가 추가
 
 	public void bye(int a) {
@@ -201,15 +202,15 @@ public class View {
 		System.out.println("찌 맞추기에 실패하셨습니다.");
 	}
 
-	public void getFishingSpotInfo() {
+	public void getFishingSpotInfo(LinkedHashMap<String, Integer> fishChances) {
 		System.out.println("물고기 등장 확률");
 		System.out.println("┌──────┬────────┐");
 		System.out.println("│ Size │ Chance │");
 		System.out.println("├──────┼────────┤");
-		System.out.println("│ S    │ 40%    │");
-		System.out.println("│ M    │ 30%    │");
-		System.out.println("│ L    │ 20%    │");
-		System.out.println("│ Boss │ 10%    │");
+
+		for (String size : fishChances.keySet()) {
+			System.out.printf("│ %-4s │ %-6s │\n", size, fishChances.get(size) + "%");
+		}
 		System.out.println("└──────┴────────┘");
 
 		System.out.println();
@@ -318,100 +319,108 @@ public class View {
 		return isHit;
 	}
 
-	public HashMap<String, String> fishing(int weather) {
+	public HashMap<String, String> fishing(int weather, LinkedHashMap<String, Integer> fishChances) {
 		HashMap<String, String> map = new HashMap<String, String>();
 
 		Random rd = new Random();
 
-		// 랜덤 값 1 ~ 10 물고기 크기 정함
-		int fishSize = rd.nextInt(10) + 1;
-		String fishSizeName = null;
+		int SChance = fishChances.get("S");
+		int MChance = fishChances.get("M");
+		int LChance = fishChances.get("L");
+		int BossChance = fishChances.get("Boss");
 		String isSuccess = null;
 
-		// 물고기 크기 값 정함
-		if (fishSize >= 1 && fishSize <= 4) {
-			fishSizeName = "2짜";
-		} else if (fishSize >= 5 && fishSize <= 7) {
-			fishSizeName = "3짜";
-		} else if (fishSize >= 8 && fishSize <= 9) {
-			fishSizeName = "4짜";
-		} else {
-			fishSizeName = "런커";
+		// 1 ~ 100 사이 랜덤 뽑기
+		int rand = rd.nextInt(100) + 1;
+
+		String fishSizeName = null;
+		int cumulative = 0;
+
+		for (Entry<String, Integer> entry : fishChances.entrySet()) {
+			cumulative += entry.getValue();
+			if (rand <= cumulative) {
+				fishSizeName = entry.getKey();
+				break;
+			}
 		}
 
 		map.put("물고기크기", fishSizeName);
 
 		// 물고기 크기에 따른 낚을 확률 정함
 		int hitRatio = 0;
-		
-		if( weather==1)//날씨 맑을 때 {
-		
-		if(fishSizeName.equals("2짜")) {
-			// 100%
-			isSuccess = "success";
-		} else if(fishSizeName.equals("3짜")) {
-			// 50%
-			hitRatio = rd.nextInt(2) + 1;
-			if(hitRatio == 1) {
+
+		if (weather == 1)// 날씨 맑을 때 {
+
+			if (fishSizeName.equals("S")) {
+				// 100%
 				isSuccess = "success";
+			} else if (fishSizeName.equals("M")) {
+				// 50%
+				hitRatio = rd.nextInt(2) + 1;
+				if (hitRatio == 1) {
+					isSuccess = "success";
+				} else {
+					isSuccess = "fail";
+				}
+			} else if (fishSizeName.equals("L")) {
+				// 25%
+				hitRatio = rd.nextInt(4) + 1;
+				if (hitRatio == 1) {
+					isSuccess = "success";
+				} else {
+					isSuccess = "fail";
+				}
+			} else if(fishSizeName.equals("Boss")) {
+				// 10%
+				hitRatio = rd.nextInt(10) + 1;
+				if (hitRatio == 1) {
+					isSuccess = "success";
+				} else {
+					isSuccess = "fail";
+				}
 			} else {
 				isSuccess = "fail";
 			}
-		} else if(fishSizeName.equals("4짜")) {
-			// 25%
-			hitRatio = rd.nextInt(4) + 1;
-			if(hitRatio == 1) {
-				isSuccess = "success";
-			} else {
-				isSuccess = "fail";
-			}
-		} else {
-			// 10%
-			hitRatio = rd.nextInt(10) + 1;
-			if(hitRatio == 1) {
-				isSuccess = "success";
-			} else {
-				isSuccess = "fail";
-			}
-		}
-		
-		else { //weather==2 (폭우)
+
+		else { // weather==2 (폭우)
 			
-			if(fishSizeName.equals("2짜")) {
+			if (fishSizeName.equals("S")) {
 				// 80%
 				hitRatio = rd.nextInt(10) + 1;
-				if(hitRatio <= 8) {
+				if (hitRatio <= 8) {
 					isSuccess = "success";
 				} else {
 					isSuccess = "fail";
 				}
-			} else if(fishSizeName.equals("3짜")) {
+				isSuccess = "success";
+			} else if (fishSizeName.equals("M")) {
 				// 40%
 				hitRatio = rd.nextInt(10) + 1;
-				if(hitRatio <=4 ) {
+				if (hitRatio <= 4) {
 					isSuccess = "success";
 				} else {
 					isSuccess = "fail";
 				}
-			} else if(fishSizeName.equals("4짜")) {
+			} else if (fishSizeName.equals("L")) {
 				// 20%
 				hitRatio = rd.nextInt(5) + 1;
-				if(hitRatio == 1) {
+				if (hitRatio == 1) {
+					isSuccess = "success";
+				} else {
+					isSuccess = "fail";
+				}
+			} else if(fishSizeName.equals("Boss")) {
+				// 8%
+				hitRatio = rd.nextInt(100) + 1;
+				if (hitRatio <= 8) {
 					isSuccess = "success";
 				} else {
 					isSuccess = "fail";
 				}
 			} else {
-				// 8%
-				hitRatio = rd.nextInt(100) + 1;
-				if(hitRatio <= 8) {
-					isSuccess = "success";
-				} else {
-					isSuccess = "fail";
-				}
+				isSuccess = "fail";
 			}
 		}
-		
 
 		if (isSuccess.equals("success")) {
 			System.out.println("\n🎉 " + isSuccess + " 낚시 성공!");
@@ -428,10 +437,10 @@ public class View {
 		// TODO Auto-generated method stub
 		String result = null;
 
-		if (map[x][y].equals("S")) {
+		if (map[x][y].startsWith("STORE_")) {
 			result = "상점";
-		} else if (map[x][y].equals("F")) {
-			result = "낚시터";
+		} else if (map[x][y].startsWith("FISH_")) {
+			result = map[x][y];
 		}
 
 		return result;
@@ -467,6 +476,7 @@ public class View {
 		System.out.println("여전히 혼자인 그의 처지를 안타까워했다...");
 		System.out.println("오늘도... 여친은 없다. 게임 오버.");
 	}
+
 	public void showWeather(int weather) {
 		if (weather == 1) {
 			System.out.println(" 오늘은 맑음!!!");

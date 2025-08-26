@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -39,15 +40,16 @@ public class Controller {
 	// 미끼 : 10개 , 포인트 : 10점, 보유금액 : 100원, 낚시대 : 대나무낚시대
 	public void run() {
 
-		String[][] map = { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+		String[][] map = { 
 				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", "FISH_1", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+				{ " ", " ", "FISH_2", " ", " ", " ", "STORE_1", " ", " ", " " },
+				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", "FISH_3", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
-				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
-				{ " ", " ", " ", " ", " ", "F", " ", " ", " ", " " },
-				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
-				{ " ", " ", " ", " ", "S", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, };
 
 		int x = 4;
@@ -213,8 +215,35 @@ public class Controller {
 										view.NoNum();
 									}
 								}
-							} else if (event.equals("낚시터")) {
+							} else if (event.startsWith("FISH_")) {
 								while (true) {
+									
+									LinkedHashMap<String, Integer> fishChances = new LinkedHashMap<>();
+									int SChance = 0;
+									int MChance = 0;
+									int LChance = 0;
+									int BossChance = 0;
+									
+									event = event.replace("FISH_", "");
+									
+									if(event.equals("1")) {
+										SChance = 40;
+										MChance = 30;
+										LChance = 20;
+										BossChance = 10;
+									} else if(event.equals("2")) {
+										BossChance = 20;
+									} else if(event.equals("3")) {
+										MChance = 40;
+										LChance = 40;
+									}
+									
+									fishChances.put("S", SChance);
+									fishChances.put("M", MChance);
+									fishChances.put("L", LChance);
+									fishChances.put("Boss", BossChance);
+									
+									
 									// 1 ~ 2
 									int weather = rd.nextInt(2) + 1;
 
@@ -232,7 +261,7 @@ public class Controller {
 
 										boolean isHit = view.hit(loginVO);
 										if (isHit) {
-											HashMap<String, String> hm = view.fishing(weather);
+											HashMap<String, String> hm = view.fishing(weather, fishChances);
 
 											String fishSizeName = hm.get("물고기크기");
 											String isSuccess = hm.get("성공실패");
@@ -270,7 +299,7 @@ public class Controller {
 										}
 									} else if (menu4 == 2) {
 										// 낚시터 확률보기
-										view.getFishingSpotInfo();
+										view.getFishingSpotInfo(fishChances);
 									} else {
 										break;
 									}
