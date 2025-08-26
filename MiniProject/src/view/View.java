@@ -378,6 +378,7 @@ public class View {
 
 		if (weather == 1)// 날씨 맑을 때 {
 
+			
 			if (fishSizeName.equals("S")) {
 				// 100%
 				isSuccess = "success";
@@ -406,10 +407,12 @@ public class View {
 					isSuccess = "fail";
 				}
 			} else {
-				isSuccess = "fail";
+
+				isSuccess ="fail";
 			}
 
 		else { // weather==2 (폭우)
+			
 
 			if (fishSizeName.equals("S")) {
 				// 80%
