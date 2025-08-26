@@ -18,19 +18,19 @@ public class View {
 	// 2. 메서드
 	// 메뉴 보여주는 메서드
 	public int showMenu() {
-		System.out.print("[1] 로그인 [2] 회원가입 [3] 종료 >>");
+		System.out.print("[1]로그인 [2]회원가입 [3]종료 >>");
 		int input = sc.nextInt();
 		return input;
 	}
 
 	public String showMapMenu() {
-		System.out.print("[w] 상 [s] 하 [a] 좌 [d] 우 [5] 상태출력 [6] 종료");
+		System.out.print("[w] 상 [s] 하 [a] 좌 [d] 우 [1]현재상태 [2]저장 [4]종료");
 		String input = sc.next();
 		return input;
 	}
 
 	public int showStoreMenu() {
-		System.out.println("[1]미끼사기 [2]낚시대 구매 [3]종료 >>");
+		System.out.println("[1]미끼구매 [2]낚시대구매 [3]종료 >>");
 		int input = sc.nextInt();
 		return input;
 	}
@@ -168,7 +168,7 @@ public class View {
 	}
 
 	public void NoNum() {// 수호가 추가
-		System.out.println("번호를 잘 못 입력 하셨습니당");
+		System.out.println("번호를 잘못 입력 하셨습니다");
 	}
 
 	public void printBuyRod(int rowId) {
@@ -418,7 +418,7 @@ public class View {
 		System.out.println("사용하고 있는 낚시대는 구매하실 수 없습니다");
 
 	}
-	
+
 	public void showEnding() {
 		System.out.println("최고의 낚싯대를 손에 쥔 김수호, 마침내 전설의 배스를 낚아 올렸다.");
 		System.out.println("이제 낚시터 사람들은 그를 이렇게 부른다… ‘배스킹(🐟👑)’.");
