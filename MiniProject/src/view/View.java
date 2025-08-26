@@ -163,11 +163,11 @@ public class View {
 	
 	// 낚시대 구매 출력-- 수호가 추가 근데 DB로 해야하나?
 	public int buyRod() {
-		System.out.println("[1]다이소 낚시대 1000원 [2]카본 낚시대 3000원 [3] 다이아몬드 낚시대 10000원");
-		int rod=sc.nextInt();
-		
-		
+		int rod = sc.nextInt();
 		return rod;
+		
+		
+	
 	}
 	
 	public void NoNum() {//수호가 추가
@@ -175,13 +175,17 @@ public class View {
 	}
 	
 	public void printBuyRod(int rowId) {
-		if(rowId == 1) {
+		if(rowId==1) {//**********25일 변경
+			System.out.println("대나무 낚시대를 구매하셨습니다");
+		}
+		
+		else if(rowId == 2) {
 			System.out.println("다이소 낚시대를 구매하셨습니다");
 			System.out.println("1000골드를 사용하셨습니다");
-		}else if(rowId==2) {
+		}else if(rowId==3) {
 			System.out.println("카본 낚시대를 구매하셨습니다");
 			System.out.println("3000골드를 사용하셨습니다");
-		}else if(rowId==3) {
+		}else if(rowId==4) {
 			System.out.println("다이아몬들 낚시대를 구매하셨습니다");
 			System.out.println("10000골드를 사용하셨습니다");
 		}else{System.out.println("번호를 잘못 입력하셨습니다");}
@@ -396,5 +400,20 @@ public class View {
 		System.out.println("로그인이 안되었습니다. 아이디와 비밀번호를 확인해주세요.");
 		
 	}
+	public void showRodList(ArrayList<RodVO> rodList) {////825
+		for(RodVO rvo : rodList) {
+			System.out.print(rvo.getRodid()+"번");
+		System.out.print("\t"+rvo.getName());
+		System.out.print("\t"+rvo.getPrice()+"원");
+		System.out.println();
+		}
+		
+	}
+	
+	public void cantBuy() {///825
+		 System.out.println("똑같은 낚시대는 구매하실 수 없습니다");
+			
+		}
+		
 
 }

@@ -91,70 +91,97 @@ public class Controller {
 
 						if (event != null) {
 							if (event.equals("상점")) {
-								while (true) {
-									int value = view.showStoreMenu();
-									if (value == 1) {
-										// 미끼 사는거
+								while (true) { view.printStatus(loginVO);
+								int value = view.showStoreMenu();
+								
+								if (value == 1) {
+									// 미끼 사는거
 
-										int count = view.buybait();
+									int count = view.buybait();
 
-										if (loginVO.getGold() - (25 * count) >= 0) {
-											loginVO.setBait(loginVO.getBait() + count);
-											loginVO.setGold(loginVO.getGold() - (25 * count));
-											view.bye(count);
+									if (loginVO.getGold() - (25 * count) >= 0) {
+										loginVO.setBait(loginVO.getBait() + count);
+										loginVO.setGold(loginVO.getGold() - (25 * count));
+										view.bye(count);
+									} else {
+										view.NoGold();
+									}
+
+								} else if (value == 2) {
+									// [2]낚시대 구매*****25일 6시23분
+									view.showRodList(dao.getRodList());
+									int rod = view.buyRod();
+									RodVO rodVO = null;
+									//// 여기
+									if(rod ==1) { 
+										//대나무 낚시대
+										if(loginVO.getRodid() == 1) {
+											view.cantBuy();
+										}
+											
+										else {rodVO = new RodVO(1, "대나무 낚시대", 0);
+										loginVO.setRodid(rodVO.getRodid());
+										view.printBuyRod(rod);}
+									}
+									
+									
+									
+									else if (rod == 2) {
+
+										if(loginVO.getRodid() == 2) {
+											view.cantBuy();
+										}
+										
+										else if (loginVO.getGold() > 1000) {
+											// 다이소 낚시대
+											loginVO.setGold(loginVO.getGold() - 1000);
+											rodVO = new RodVO(2, "다이소 낚시대", 1000);
+											loginVO.setRodid(rodVO.getRodid());
+											view.printBuyRod(rod);
 										} else {
+											view.NoGold();
+
+										}
+
+									} else if (rod == 3) {
+										if(loginVO.getRodid() == 3) {
+											view.cantBuy();
+										}
+										
+										else if (loginVO.getGold() > 3000) {
+											// 카본 낚시대
+											loginVO.setGold(loginVO.getGold() - 3000);
+											rodVO = new RodVO(3, "카본 낚시대", 3000);
+											loginVO.setRodid(rodVO.getRodid());
+											view.printBuyRod(rod);
+										} else {
+
 											view.NoGold();
 										}
 
-									} else if (value == 2) {
-										// [2]낚시대 구매
-
-										int rod = view.buyRod();
-										RodVO rodVO = null;
-
-										if (rod == 1) {
-											if (loginVO.getGold() > 1000) {
-												// 다이소 낚시대
-												loginVO.setGold(loginVO.getGold() - 1000);
-												rodVO = new RodVO(2, "다이소 낚시대", 1000);
-												loginVO.setRodid(rodVO.getRodid());
-												view.printBuyRod(rod);
-											} else {
-												view.NoGold();
-
-											}
-
-										} else if (rod == 2) {
-											if (loginVO.getGold() > 3000) {
-												// 카본 낚시대
-												loginVO.setGold(loginVO.getGold() - 3000);
-												rodVO = new RodVO(3, "카본 낚시대", 3000);
-												loginVO.setRodid(rodVO.getRodid());
-												view.printBuyRod(rod);
-											} else {
-
-												view.NoGold();
-											}
-
-										} else if (rod == 3) {
-											if (loginVO.getGold() > 10000) {
-												// 카본 낚시대
-												loginVO.setGold(loginVO.getGold() - 10000);
-												rodVO = new RodVO(4, "다이아몬드 낚시대", 10000);
-												loginVO.setRodid(rodVO.getRodid());
-												view.printBuyRod(rod);
-											} else {
-
-												view.NoGold();
-											}
-
-											// 다이아몬드 낚시대
-
-										} else {
-											view.NoNum();
-											// 번호 잘못 입력
-
+									} else if (rod == 4) {
+									
+										if(loginVO.getRodid() == 4) {
+											view.cantBuy();
 										}
+										else if (loginVO.getGold() > 10000) {
+											// 다이아몬드 낚시대
+											loginVO.setGold(loginVO.getGold() - 10000);
+											rodVO = new RodVO(4, "다이아몬드 낚시대", 10000);
+											loginVO.setRodid(rodVO.getRodid());
+											view.printBuyRod(rod);
+										} else {
+
+											view.NoGold();
+										}
+
+										
+
+									} else {
+										view.NoNum();
+										// 번호 잘못 입력
+
+									}
 
 									} else if (value == 3) {
 
