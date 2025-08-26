@@ -37,23 +37,21 @@ public class Controller {
 	// [1]- [5]-
 	// 미끼 : 10개 , 포인트 : 10점, 보유금액 : 100원, 낚시대 : 대나무낚시대
 	public void run() {
-		
-		String[][] map = {
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", "F", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", "S", " ", " ", " ", " ", " "},
-            {" ", " ", " ", " ", " ", " ", " ", " ", " ", " "},
-        };
-		
+
+		String[][] map = { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", " ", "F", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", "S", " ", " ", " ", " ", " " },
+				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, };
+
 		int x = 4;
 		int y = 4;
-		
+
 		// 임시 입력 지워야 함
 		Scanner sc = new Scanner(System.in);
 		while (true) {
@@ -68,126 +66,104 @@ public class Controller {
 						// 1. 뷰에게 현재 맵 상태를 출력하라고 요청
 						view.printMap(map, x, y);
 
-						int nowX = x;
-						int nowY = y;
+						int nextX = x;
+						int nextY = y;
 
 						String dir = view.showMapMenu();
 
+						// 경계 체크
 						if (dir.equals("w")) {
-							x--;
+							nextX--;
 						} else if (dir.equals("s")) {
-							x++;
+							nextX++;
 						} else if (dir.equals("a")) {
-							y--;
+							nextY--;
 						} else if (dir.equals("d")) {
-							y++;
+							nextY++;
 						} else if (dir.equals("5")) {
 							view.printStatus(loginVO);
+							continue;
 						} else {
 							break;
 						}
+						
+						if (nextX < 0 || nextX >= map.length || nextY < 0 || nextY >= map[0].length) {
+							System.out.println("맵을 넘어가면 안됩니다.");
+							continue;
+							
+						}
 
-						String event = view.eventStart(map, x, y);
-
+						String event = view.eventStart(map, nextX, nextY);
+						
 						if (event != null) {
 							if (event.equals("상점")) {
-								while (true) { view.printStatus(loginVO);
-								int value = view.showStoreMenu();
-								
-								if (value == 1) {
-									// 미끼 사는거
+								while (true) {
+									int value = view.showStoreMenu();
+									if (value == 1) {
+										// 미끼 사는거
 
-									int count = view.buybait();
+										int count = view.buybait();
 
-									if (loginVO.getGold() - (25 * count) >= 0) {
-										loginVO.setBait(loginVO.getBait() + count);
-										loginVO.setGold(loginVO.getGold() - (25 * count));
-										view.bye(count);
-									} else {
-										view.NoGold();
-									}
-
-								} else if (value == 2) {
-									// [2]낚시대 구매*****25일 6시23분
-									view.showRodList(dao.getRodList());
-									int rod = view.buyRod();
-									RodVO rodVO = null;
-									//// 여기
-									if(rod ==1) { 
-										//대나무 낚시대
-										if(loginVO.getRodid() == 1) {
-											view.cantBuy();
-										}
-											
-										else {rodVO = new RodVO(1, "대나무 낚시대", 0);
-										loginVO.setRodid(rodVO.getRodid());
-										view.printBuyRod(rod);}
-									}
-									
-									
-									
-									else if (rod == 2) {
-
-										if(loginVO.getRodid() == 2) {
-											view.cantBuy();
-										}
-										
-										else if (loginVO.getGold() > 1000) {
-											// 다이소 낚시대
-											loginVO.setGold(loginVO.getGold() - 1000);
-											rodVO = new RodVO(2, "다이소 낚시대", 1000);
-											loginVO.setRodid(rodVO.getRodid());
-											view.printBuyRod(rod);
+										if (loginVO.getGold() - (25 * count) >= 0) {
+											loginVO.setBait(loginVO.getBait() + count);
+											loginVO.setGold(loginVO.getGold() - (25 * count));
+											view.bye(count);
 										} else {
 											view.NoGold();
-
 										}
 
-									} else if (rod == 3) {
-										if(loginVO.getRodid() == 3) {
-											view.cantBuy();
-										}
-										
-										else if (loginVO.getGold() > 3000) {
-											// 카본 낚시대
-											loginVO.setGold(loginVO.getGold() - 3000);
-											rodVO = new RodVO(3, "카본 낚시대", 3000);
-											loginVO.setRodid(rodVO.getRodid());
-											view.printBuyRod(rod);
-										} else {
+									} else if (value == 2) {
+										// [2]낚시대 구매
 
-											view.NoGold();
-										}
+										int rod = view.buyRod();
+										RodVO rodVO = null;
 
-									} else if (rod == 4) {
-									
-										if(loginVO.getRodid() == 4) {
-											view.cantBuy();
-										}
-										else if (loginVO.getGold() > 10000) {
+										if (rod == 1) {
+											if (loginVO.getGold() > 1000) {
+												// 다이소 낚시대
+												loginVO.setGold(loginVO.getGold() - 1000);
+												rodVO = new RodVO(2, "다이소 낚시대", 1000);
+												loginVO.setRodid(rodVO.getRodid());
+												view.printBuyRod(rod);
+											} else {
+												view.NoGold();
+
+											}
+
+										} else if (rod == 2) {
+											if (loginVO.getGold() > 3000) {
+												// 카본 낚시대
+												loginVO.setGold(loginVO.getGold() - 3000);
+												rodVO = new RodVO(3, "카본 낚시대", 3000);
+												loginVO.setRodid(rodVO.getRodid());
+												view.printBuyRod(rod);
+											} else {
+
+												view.NoGold();
+											}
+
+										} else if (rod == 3) {
+											if (loginVO.getGold() > 10000) {
+												// 카본 낚시대
+												loginVO.setGold(loginVO.getGold() - 10000);
+												rodVO = new RodVO(4, "다이아몬드 낚시대", 10000);
+												loginVO.setRodid(rodVO.getRodid());
+												view.printBuyRod(rod);
+											} else {
+
+												view.NoGold();
+											}
+
 											// 다이아몬드 낚시대
-											loginVO.setGold(loginVO.getGold() - 10000);
-											rodVO = new RodVO(4, "다이아몬드 낚시대", 10000);
-											loginVO.setRodid(rodVO.getRodid());
-											view.printBuyRod(rod);
+
 										} else {
+											view.NoNum();
+											// 번호 잘못 입력
 
-											view.NoGold();
 										}
-
-										
-
-									} else {
-										view.NoNum();
-										// 번호 잘못 입력
-
-									}
 
 									} else if (value == 3) {
 
-										// [3]종료
-										x = nowX;
-										y = nowY;
 										break;
 									} else {
 										view.NoNum();
@@ -247,21 +223,13 @@ public class Controller {
 										// 낚시터 확률보기
 										view.getFishingSpotInfo();
 									} else {
-										x = nowX;
-										y = nowY;
 										break;
 									}
-									
-									int finishPoint = loginVO.getPoint();
-									
-									if(finishPoint >= 100) {
-									    dao.initialPoint(loginVO);
-									    view.showEnding();
-									    return;   // run() 메서드 종료 → 자연스럽게 프로그램 종료
-									}
-									
 								}
 							}
+						} else {
+							x = nextX;
+							y = nextY;
 						}
 
 					}
