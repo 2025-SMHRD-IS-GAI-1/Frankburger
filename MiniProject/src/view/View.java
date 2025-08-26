@@ -350,8 +350,10 @@ public class View {
 		int hitRatio = 0;
 
 		if (weather == 1)// 날씨 맑을 때 {
-
-			if (fishSizeName.equals("S")) {
+			
+			if(fishSizeName == null) {
+				isSuccess = "fail";
+			} else if (fishSizeName.equals("S")) {
 				// 100%
 				isSuccess = "success";
 			} else if (fishSizeName.equals("M")) {
@@ -378,13 +380,13 @@ public class View {
 				} else {
 					isSuccess = "fail";
 				}
-			} else {
-				isSuccess = "fail";
 			}
 
 		else { // weather==2 (폭우)
 			
-			if (fishSizeName.equals("S")) {
+			if(fishSizeName == null) {
+				isSuccess = "fail";
+			} else if (fishSizeName.equals("S")) {
 				// 80%
 				hitRatio = rd.nextInt(10) + 1;
 				if (hitRatio <= 8) {
@@ -417,8 +419,6 @@ public class View {
 				} else {
 					isSuccess = "fail";
 				}
-			} else {
-				isSuccess = "fail";
 			}
 		}
 
