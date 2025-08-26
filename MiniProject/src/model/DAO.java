@@ -121,9 +121,32 @@ public class DAO {
 	}
 
 	// 낚시대 전체 조회
-	public ArrayList<RodVO> getRodList() {
-		return null;
-	}
+	// 낚시대 전체 조회 *****25일 6시23분
+		public ArrayList<RodVO> getRodList() {
+			ArrayList<RodVO> list = new ArrayList<>();
+			try {
+				getConn();
+
+				String sql = "SELECT ROD_ID, NAME, PRICE FROM ROD";
+				psmt = conn.prepareStatement(sql);
+				rs = psmt.executeQuery();
+
+				while (rs.next()) {
+					// RodVO는 생성자 값 아무거나 넣고, set으로 채움
+					RodVO rvo = new RodVO(0, "", 0);
+					rvo.setRodid(rs.getInt("ROD_ID"));
+					rvo.setName(rs.getString("NAME"));
+					rvo.setPrice(rs.getInt("PRICE"));
+					list.add(rvo);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				getClose();
+			}
+			return list;
+		}
 	
 	
 	//
@@ -157,6 +180,32 @@ public class DAO {
 		}
 		
 		return rvo;
+	}
+	
+	
+	// 엔딩시 골드, 미끼수 초기화
+	public void initialPoint(MemberVO mvo) {
+		
+		try {
+			getConn();
+
+			String sql = "UPDATE MEMBER SET GOLD = 0, BAIT = 10 WHERE MEMBER_ID = ?";
+
+			psmt = conn.prepareStatement(sql);
+
+			psmt.setString(1, mvo.getMemberId());
+
+			psmt.executeUpdate();
+			
+			conn.commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			getClose();
+		}
+		
 	}
 
 }
