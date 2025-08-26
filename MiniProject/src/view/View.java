@@ -262,7 +262,8 @@ public class View {
 		System.out.println();
 		System.out.println("             👉 번호를 입력해주세요! ");
 		System.out.print("                      "); // 커서 위치 조정
-		return null;
+		String input = sc.next();
+		return input;
 	}
 
 	// 나가기 출력
@@ -464,25 +465,15 @@ public class View {
         System.out.println("════════════════════════════════════════════════");
     }
 
-	public boolean hit(MemberVO loginVO) {
-		int rodId = loginVO.getRodid();
+	public boolean hit(int length) {
 		boolean isHit = false;
 
 		int barLength = 30; // 바 길이
 		int targetStart = 0; // 성공 구간 시작
-		int targetEnd = 0; // 성공 구간 끝
+		int targetEnd = length; // 성공 구간 끝
 		int middlePoint = barLength / 2;
 		boolean forward = true;
 
-		if (rodId == 1) {
-			targetEnd = 4;
-		} else if (rodId == 2) {
-			targetEnd = 5;
-		} else if (rodId == 3) {
-			targetEnd = 6;
-		} else if (rodId == 4) {
-			targetEnd = 7;
-		}
 
 
 		while (true) {
@@ -557,66 +548,6 @@ public class View {
 		}
 
 		return isHit;
-	}
-
-	public HashMap<String, String> fishing(int weather, LinkedHashMap<String, Integer> fishChances) {
-		HashMap<String, String> map = new HashMap<String, String>();
-
-		Random rd = new Random();
-
-		int SChance = fishChances.get("S");
-		int MChance = fishChances.get("M");
-		int LChance = fishChances.get("L");
-		int BossChance = fishChances.get("Boss");
-		String isSuccess = "fail";
-
-		// 1 ~ 100 사이 랜덤 뽑기
-		int rand = rd.nextInt(100) + 1;
-
-		String fishSizeName = "꽝";
-		int cumulative = 0;
-
-		for (Entry<String, Integer> entry : fishChances.entrySet()) {
-			cumulative += entry.getValue();
-			if (rand <= cumulative) {
-				fishSizeName = entry.getKey();
-				break;
-			}
-		}
-
-		map.put("물고기크기", fishSizeName);
-
-		// 기본 확률표 (맑은 날 기준)
-		HashMap<String, Integer> baseProb = new HashMap<>();
-		baseProb.put("S", 100);
-		baseProb.put("M", 50);
-		baseProb.put("L", 25);
-		baseProb.put("Boss", 10);
-
-		// 날씨에 따라 확률 조정
-		double weatherFactor = (weather == 1) ? 1.0 : 0.8; // 맑음=1.0, 폭우=0.8
-
-		if (!fishSizeName.equals("꽝")) {
-			Integer chance = baseProb.get(fishSizeName);
-
-			if (chance != null) {
-				int adjustedChance = (int) Math.round(chance * weatherFactor);
-				int roll = rd.nextInt(100) + 1; // 1~100
-				if (roll <= adjustedChance) {
-					isSuccess = "success";
-				}
-			}
-		}
-
-		if (isSuccess.equals("success")) {
-			System.out.println("\n🎉 " + fishSizeName + " 낚시 성공!");
-		} else {
-			System.out.println("\n💀 " + fishSizeName + " 낚시 실패!");
-		}
-
-		map.put("성공실패", isSuccess);
-
-		return map;
 	}
 
 	public String eventStart(String[][] map, int x, int y) {
