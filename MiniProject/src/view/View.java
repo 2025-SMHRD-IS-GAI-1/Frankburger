@@ -111,11 +111,6 @@ public class View {
 		}
 	}
 
-	// 회원 정보들을 출력하는 메서드
-	public void showMembers(ArrayList<RodVO> list) {
-
-	}
-
 	// 맵 출력
 	public void printMap(String[][] map, int x, int y) {
 		for (int i = 0; i < map.length; i++) {
@@ -360,7 +355,7 @@ public class View {
 		// 1 ~ 100 사이 랜덤 뽑기
 		int rand = rd.nextInt(100) + 1;
 
-		String fishSizeName = "default";
+		String fishSizeName = "꽝";
 		int cumulative = 0;
 
 		for (Entry<String, Integer> entry : fishChances.entrySet()) {
@@ -453,9 +448,9 @@ public class View {
 		}
 
 		if (isSuccess.equals("success")) {
-			System.out.println("\n🎉 " + isSuccess + " 낚시 성공!");
+			System.out.println("\n🎉 " + fishSizeName + " 낚시 성공!");
 		} else {
-			System.out.println("\n💀 " + isSuccess + " 낚시 실패!");
+			System.out.println("\n💀 " + fishSizeName + " 낚시 실패!");
 		}
 
 		map.put("성공실패", isSuccess);
@@ -515,6 +510,12 @@ public class View {
 			System.out.println("폭우면 잡힐확률 20%감소!");
 		}
 
+	}
+	
+	// 낚시후 상태 보여주기
+	public void showFishingStatus(MemberVO mvo) {
+		System.out.println("gold = " + mvo.getGold() + ", point = "
+				+ mvo.getPoint() + ", vait = " + mvo.getBait());
 	}
 
 }

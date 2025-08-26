@@ -304,8 +304,7 @@ public class Controller {
 												loginVO.setBait(loginVO.getBait() - 1);
 												view.fishingFail(fishSizeName);
 											}
-											System.out.println("gold = " + loginVO.getGold() + ", point = "
-													+ loginVO.getPoint() + ", vait = " + loginVO.getBait());
+											view.showFishingStatus(loginVO);
 										} else {
 											view.hitFail();
 											loginVO.setBait(loginVO.getBait() - 1);
