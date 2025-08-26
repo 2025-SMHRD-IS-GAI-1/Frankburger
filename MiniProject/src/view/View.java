@@ -45,9 +45,23 @@ public class View {
 	}
 
 	public String showStoreMenu() {
-		System.out.print("[1]미끼구매 (25G) [2]낚시대구매 [3]나가기 >>");
+		System.out.println();
+	    System.out.println("      ══════════════════════════════════════════");
+	    System.out.println("                 🏪 FISHING SHOP 🏪");
+	    System.out.println("      ══════════════════════════════════════════");
+	    System.out.println();
+	    System.out.println("            ═══════════════════════════════");
+	    System.out.println("               1️ 미끼 구매                  ");
+	    System.out.println("               2 낚시대 구매                ");
+	    System.out.println("               3 나가기                      ");
+	    System.out.println("            ═══════════════════════════════");
+	    System.out.println();
+	    System.out.println("              🎣 원하시는 번호를 입력해주세요! 🎣");
+	    System.out.print("                        ");
+	    
 		String input = sc.next();
-		return input;
+	    
+	    return input; 
 	}
 
 	public String showFishingMenu() {
@@ -111,26 +125,28 @@ public class View {
 	}
 
 	// 맵 출력
-	public void printMap(String[][] map, int x, int y) {
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[i].length; j++) {
-				if (map[i][j].startsWith("STORE_")) {
-					System.out.print("🏪");
-				} else if (map[i][j].startsWith("FISH_")) {
-					System.out.print("🎣");
-				} else if (i == x && j == y) {
-					System.out.print("🧍");
-				} else {
-					System.out.print("⬜");
-				}
+		public void printMap(String[][] map, int x, int y) {
+			for (int i = 0; i < map.length; i++) {
+				for (int j = 0; j < map[i].length; j++) {
+					if (map[i][j].startsWith("STORE_")) {
+						System.out.print("🏪");
+					} else if (map[i][j].startsWith("FISH_")) {
+						System.out.print("🎣");
+					} else if (i == x && j == y) {
+						System.out.print("🧍");
+					} else {
+						System.out.print("⬜");
+					}
 
+				}
+				System.out.println();
 			}
-			System.out.println();
 		}
-	}
 
 	// 상태 출력
 	public void printStatus(MemberVO mvo) {
+		System.out.println();
+		System.out.println("<  현재 나의 정보  >");
 		System.out.println("  점 수 : " + mvo.getPoint());
 		System.out.println("  골 드 : " + mvo.getGold());
 		System.out.println("  미 끼 : " + mvo.getBait());
@@ -164,10 +180,14 @@ public class View {
 
 	// 미끼 사기 출력
 	public int buybait() {
-		System.out.print("미끼를 몇개 구매 하시겠습니까?");
-		int count = sc.nextInt();
-		return count;
+		 System.out.println();
+		    System.out.println("════════════════════════════════════════════════");
+		    System.out.println("            🦐 새우 미끼 : 25 Gold");
+		    System.out.println("════════════════════════════════════════════════");
+		    System.out.print("👉 몇 개를 구매하시겠습니까? : ");
+			int count = sc.nextInt();
 
+		    return count;
 	}
 
 	// 미끼 사고 인사하기 - 수호가 추가
