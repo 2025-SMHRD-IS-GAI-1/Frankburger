@@ -251,6 +251,15 @@ public class Controller {
 										y = nowY;
 										break;
 									}
+									
+									int finishPoint = loginVO.getPoint();
+									
+									if(finishPoint >= 100) {
+									    dao.initialPoint(loginVO);
+									    view.showEnding();
+									    return;   // run() 메서드 종료 → 자연스럽게 프로그램 종료
+									}
+									
 								}
 							}
 						}

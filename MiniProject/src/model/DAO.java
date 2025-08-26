@@ -181,5 +181,31 @@ public class DAO {
 		
 		return rvo;
 	}
+	
+	
+	// 엔딩시 골드, 미끼수 초기화
+	public void initialPoint(MemberVO mvo) {
+		
+		try {
+			getConn();
+
+			String sql = "UPDATE MEMBER SET GOLD = 0, BAIT = 10 WHERE MEMBER_ID = ?";
+
+			psmt = conn.prepareStatement(sql);
+
+			psmt.setString(1, mvo.getMemberId());
+
+			psmt.executeUpdate();
+			
+			conn.commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			getClose();
+		}
+		
+	}
 
 }
