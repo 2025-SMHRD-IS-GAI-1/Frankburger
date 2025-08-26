@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Map.Entry;
 
 import model.MemberVO;
 import model.RodVO;
@@ -19,7 +19,7 @@ public class View {
 
 	// 2. 메서드
 	// 메뉴 보여주는 메서드
-	public int showMenu() {
+	public String showMenu() {
 		System.out.println();
 		System.out.println("════════════════════════════════════════════════");
 		System.out.println("       	    🐟 BASS FISHING GAME 🐟");
@@ -29,13 +29,13 @@ public class View {
 		System.out.println("           ╰─────╯   ╰─────╯   ╰─────╯");
 		System.out.println("            로그인     회원가입     종료");
 		System.out.println();
-		//System.out.println("════════════════════════════════════════════════");
+		// System.out.println("════════════════════════════════════════════════");
 		System.out.println("              🎣 번호를 입력해주세요 !🎣");
 		System.out.print("                        ");
-		int input = sc.nextInt();
+		String menu = sc.next();
 //		System.out.println();
 //		System.out.println("        🐠      🐟      🐡      🐟      🐠");
-		return input;
+		return menu;
 	}
 
 	public String showMapMenu() {
@@ -44,15 +44,15 @@ public class View {
 		return input;
 	}
 
-	public int showStoreMenu() {
+	public String showStoreMenu() {
 		System.out.print("[1]미끼구매 (25G) [2]낚시대구매 [3]나가기 >>");
-		int input = sc.nextInt();
+		String input = sc.next();
 		return input;
 	}
 
-	public int showFishingMenu() {
+	public String showFishingMenu() {
 		System.out.print("[1]낚시하기 [2]확률보기 [3]나가기 >>");
-		int input = sc.nextInt();
+		String input = sc.next();
 		return input;
 	}
 
@@ -69,7 +69,6 @@ public class View {
 		return mvo; // Controller → DAO로 전달
 
 	}
-	
 
 	// 로그인 성공 여부 출력하는 메서드
 	public void statusLogin(MemberVO loginVO) {
@@ -85,7 +84,7 @@ public class View {
 
 	// 회원가입 출력하는 메서드
 	public MemberVO showJoin() {
-		
+
 		System.out.println("==== 회원가입 ====");
 		System.out.print("ID 입력 : ");
 		String id = sc.next();
@@ -149,11 +148,13 @@ public class View {
 		System.out.println("  낚시대 : " + rodName);
 	}
 
-	public void RealQuitMsg() {
+	public String RealQuitMsg() {
 		System.out.println();
 		System.out.println("정말 나가시겠습니까?");
 		System.out.println("저장되지 않은 데이터는 삭제됩니다.");
 		System.out.println("[1]종료 [2]취소");
+		String answer = sc.next();
+		return answer;
 	}
 
 	// 정말 나가시겠습니까?
@@ -186,10 +187,6 @@ public class View {
 		int rod = sc.nextInt();
 		return rod;
 
-	}
-
-	public void NoNum() {// 수호가 추가
-		System.out.println("번호를 잘못 입력 하셨습니다");
 	}
 
 	public void printBuyRod(int rowId) {
@@ -377,16 +374,16 @@ public class View {
 
 		// 날씨에 따라 확률 조정
 		double weatherFactor = (weather == 1) ? 1.0 : 0.8; // 맑음=1.0, 폭우=0.8
-		
-		if(!fishSizeName.equals("꽝")) {
+
+		if (!fishSizeName.equals("꽝")) {
 			Integer chance = baseProb.get(fishSizeName);
 
 			if (chance != null) {
-			    int adjustedChance = (int)Math.round(chance * weatherFactor);
-			    int roll = rd.nextInt(100) + 1; // 1~100
-			    if (roll <= adjustedChance) {
-			        isSuccess = "success";
-			    }
+				int adjustedChance = (int) Math.round(chance * weatherFactor);
+				int roll = rd.nextInt(100) + 1; // 1~100
+				if (roll <= adjustedChance) {
+					isSuccess = "success";
+				}
 			}
 		}
 
@@ -454,11 +451,15 @@ public class View {
 		}
 
 	}
-	
+
 	// 낚시후 상태 보여주기
 	public void showFishingStatus(MemberVO mvo) {
-		System.out.println("gold = " + mvo.getGold() + ", point = "
-				+ mvo.getPoint() + ", vait = " + mvo.getBait());
+		System.out.println("gold = " + mvo.getGold() + ", point = " + mvo.getPoint() + ", vait = " + mvo.getBait());
+	}
+
+	public void wrongInput() {
+		System.out.println("잘못 입력하셨습니다. 다시 입력해 주세요.");
+		
 	}
 
 }

@@ -1,10 +1,8 @@
 package controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Random;
-import java.util.Scanner;
 
 import model.DAO;
 import model.MemberVO;
@@ -40,6 +38,37 @@ public class Controller {
 	// 미끼 : 10개 , 포인트 : 10점, 보유금액 : 100원, 낚시대 : 대나무낚시대
 	public void run() {
 
+		while (true) {
+			// 메뉴 출력
+			String menu = view.showMenu();
+			
+			if(menu.equals("1")) {
+				handleLogin();
+			} else if(menu.equals("2")) {
+				int row = dao.join(view.showJoin());
+				view.showInfo(row, "회원가입"); // 성공/실패 출력(view)
+			} else if(menu.equals("3")) {
+				break;
+			} else {
+				view.wrongInput();
+			}
+ 			
+		}
+
+	}
+	
+	private void handleLogin() {
+		MemberVO loginVO = dao.login(view.showLogin());
+		if (loginVO != null) {
+			view.statusLogin(loginVO);
+			startGame(loginVO);
+		} else {
+			view.showLoginFail();
+		}
+	}
+	
+	private void startGame(MemberVO loginVO) {
+		
 		String[][] map = { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", "FISH_1", " ", " ", " ", " ", " " },
@@ -53,308 +82,303 @@ public class Controller {
 
 		int x = 4;
 		int y = 4;
-
-		// 임시 입력 지워야 함
-		Scanner sc = new Scanner(System.in);
 		Random rd = new Random();
+		
 		while (true) {
-			// 메뉴 출력
-			int input = view.showMenu();
-			if (input == 1) {
-				MemberVO loginVO = dao.login(view.showLogin());
-				if (loginVO != null) {
-					view.statusLogin(loginVO);
+			// 1. 뷰에게 현재 맵 상태를 출력하라고 요청
+			view.printMap(map, x, y);
 
-					boolean inGame = true;
+			int nextX = x;
+			int nextY = y;
 
-					while (inGame) {
-						// 1. 뷰에게 현재 맵 상태를 출력하라고 요청
-						view.printMap(map, x, y);
+			String dir = view.showMapMenu();
 
-						int nextX = x;
-						int nextY = y;
+			// 경계 체크
+			if (dir.equals("w")) {
+				nextX--;
+			} else if (dir.equals("s")) {
+				nextX++;
+			} else if (dir.equals("a")) {
+				nextY--;
+			} else if (dir.equals("d")) {
+				nextY++;
+			} else if (dir.equals("5")) {
+				view.printStatus(loginVO);
+				continue;
+			} else if (dir.equals("1")) { // 상태출력
+				view.printStatus(loginVO);
+			} else if (dir.equals("2")) { // 저장
+				dao.Save(loginVO);
+				continue;
+			} else if (dir.equals("3")) { // 게임 종료 선택
+				String exitMenu = view.RealQuitMsg(); // 메시지 출력
 
-						String dir = view.showMapMenu();
-
-						// 경계 체크
-						if (dir.equals("w")) {
-							nextX--;
-						} else if (dir.equals("s")) {
-							nextX++;
-						} else if (dir.equals("a")) {
-							nextY--;
-						} else if (dir.equals("d")) {
-							nextY++;
-						} else if (dir.equals("5")) {
-							view.printStatus(loginVO);
-							continue;
-						} else if (dir.equals("1")) { // 상태출력
-							view.printStatus(loginVO);
-						} else if (dir.equals("2")) { // 저장
-							dao.Save(loginVO);
-							continue;
-						} else if (dir.equals("3")) { // 게임 종료 선택
-							view.RealQuitMsg(); // 메시지 출력
-							boolean validInput = false;
-
-							while (!validInput) {
-								int num = sc.nextInt(); // 사용자 입력 받기
-
-								if (num == 1) { // 종료
-									view.Real();
-									inGame = false; // 게임 루프 종료
-									validInput = true;
-								} else if (num == 2) { // 취소
-									validInput = true; // 게임 계속
-								} else {
-									view.NoNum(); // 잘못 입력 시 메시지
-								}
-							}
-							continue; // ← 중요! 아래 else(NoNum)로 안 내려가게
-						}
-
-						if (nextX < 0 || nextX >= map.length || nextY < 0 || nextY >= map[0].length) {
-							System.out.println("맵을 넘어가면 안됩니다.");
-							continue;
-
-						}
-
-						String event = view.eventStart(map, nextX, nextY);
-
-						if (event != null) {
-							if (event.equals("상점")) {
-								while (true) {
-									view.printStatus(loginVO);
-									int value = view.showStoreMenu();
-									if (value == 1) {
-										// 미끼 사는거
-
-										int count = view.buybait();
-
-										if (loginVO.getGold() - (25 * count) >= 0) {
-											loginVO.setBait(loginVO.getBait() + count);
-											loginVO.setGold(loginVO.getGold() - (25 * count));
-											view.bye(count);
-										} else {
-											view.NoGold();
-										}
-
-									} else if (value == 2) {
-										// [2]낚시대 구매*****25일 6시23분
-										view.showRodList(dao.getRodList());
-										int rod = view.buyRod();
-										RodVO rodVO = null;
-										//// 여기
-										if (rod == 1) {
-											// 대나무 낚시대
-											if (loginVO.getRodid() == 1) {
-												view.cantBuy();
-											}
-
-											else {
-												rodVO = new RodVO(1, "대나무 낚시대", 0);
-												loginVO.setRodid(rodVO.getRodid());
-												view.printBuyRod(rod);
-											}
-										}
-
-										else if (rod == 2) {
-
-											if (loginVO.getRodid() == 2) {
-												view.cantBuy();
-											}
-
-											else if (loginVO.getGold() > 1000) {
-												// 다이소 낚시대
-												loginVO.setGold(loginVO.getGold() - 1000);
-												rodVO = new RodVO(2, "다이소 낚시대", 1000);
-												loginVO.setRodid(rodVO.getRodid());
-												view.printBuyRod(rod);
-											} else {
-												view.NoGold();
-
-											}
-
-										} else if (rod == 3) {
-											if (loginVO.getRodid() == 3) {
-												view.cantBuy();
-											}
-
-											else if (loginVO.getGold() > 3000) {
-												// 카본 낚시대
-												loginVO.setGold(loginVO.getGold() - 3000);
-												rodVO = new RodVO(3, "카본 낚시대", 3000);
-												loginVO.setRodid(rodVO.getRodid());
-												view.printBuyRod(rod);
-											} else {
-
-												view.NoGold();
-											}
-
-										} else if (rod == 4) {
-
-											if (loginVO.getRodid() == 4) {
-												view.cantBuy();
-											} else if (loginVO.getGold() > 10000) {
-												// 다이아몬드 낚시대
-												loginVO.setGold(loginVO.getGold() - 10000);
-												rodVO = new RodVO(4, "다이아몬드 낚시대", 10000);
-												loginVO.setRodid(rodVO.getRodid());
-												view.printBuyRod(rod);
-											} else {
-
-												view.NoGold();
-											}
-
-										} else {
-											view.NoNum();
-											// 번호 잘못 입력
-
-										}
-
-										// 미끼수가 0 이고 gold가 25보다 적을때 배드엔딩
-										int bait = loginVO.getBait();
-										int gold = loginVO.getGold();
-
-										if (bait == 0 && gold < 25) {
-											dao.initialPoint(loginVO);
-											view.showBadEnding();
-											return;
-										}
-
-									} else if (value == 3) {
-
-										break;
-									} else {
-										view.NoNum();
-									}
-								}
-							} else if (event.startsWith("FISH_")) {
-								while (true) {
-
-									LinkedHashMap<String, Integer> fishChances = new LinkedHashMap<>();
-									int SChance = 0;
-									int MChance = 0;
-									int LChance = 0;
-									int BossChance = 0;
-
-									event = event.replace("FISH_", "");
-
-									if (event.equals("1")) {
-										SChance = 40;
-										MChance = 30;
-										LChance = 20;
-										BossChance = 10;
-									} else if (event.equals("2")) {
-										BossChance = 20;
-									} else if (event.equals("3")) {
-										MChance = 40;
-										LChance = 40;
-									}
-
-									fishChances.put("S", SChance);
-									fishChances.put("M", MChance);
-									fishChances.put("L", LChance);
-									fishChances.put("Boss", BossChance);
-
-									// 1 ~ 2
-									int weather = rd.nextInt(2) + 1;
-
-									view.showWeather(weather);
-
-									int menu4 = view.showFishingMenu();
-									if (menu4 == 1) {
-										// 낚시하기
-
-										// 남은 미끼가 있는지 판단
-										if (loginVO.getBait() <= 0) {
-											view.alertBuyBait();
-											continue;
-										}
-
-										boolean isHit = view.hit(loginVO);
-										if (isHit) {
-											HashMap<String, String> hm = view.fishing(weather, fishChances);
-
-											String fishSizeName = hm.get("물고기크기");
-											String isSuccess = hm.get("성공실패");
-											int gold = 0;
-											int point = 0;
-
-											if (isSuccess.equals("success")) {
-												if (fishSizeName.equals("S")) {
-													gold = 100;
-													point = 10;
-
-												} else if (fishSizeName.equals("M")) {
-													gold = 120;
-													point = 25;
-												} else if (fishSizeName.equals("L")) {
-													gold = 150;
-													point = 60;
-												} else {
-													gold = 5000;
-													point = 500;
-												}
-												view.fishingSuccess(fishSizeName);
-												loginVO.setGold(loginVO.getGold() + gold);
-												loginVO.setPoint(loginVO.getPoint() + point);
-												loginVO.setBait(loginVO.getBait() - 1);
-											} else {
-												loginVO.setBait(loginVO.getBait() - 1);
-												view.fishingFail(fishSizeName);
-											}
-											view.showFishingStatus(loginVO);
-										} else {
-											view.hitFail();
-											loginVO.setBait(loginVO.getBait() - 1);
-										}
-									} else if (menu4 == 2) {
-										// 낚시터 확률보기
-										view.getFishingSpotInfo(fishChances);
-									} else {
-										break;
-									}
-
-									int finishPoint = loginVO.getPoint();
-
-									// 2000점 이상이면 굿엔딩
-									if (finishPoint >= 2000) {
-										dao.initialPoint(loginVO);
-										view.showGoodEnding();
-										return; // run() 메서드 종료 → 자연스럽게 프로그램 종료
-									}
-
-									// 미끼수가 0 이고 gold가 25보다 적을때 배드엔딩
-									int bait = loginVO.getBait();
-									int gold = loginVO.getGold();
-
-									if (bait == 0 && gold < 25) {
-										dao.initialPoint(loginVO);
-										view.showBadEnding();
-										return;
-									}
-								}
-							}
-						} else {
-							x = nextX;
-							y = nextY;
-						}
-
-					}
+				if (exitMenu.equals("1")) { // 종료
+					view.Real();
+					return;
+				} else if (exitMenu.equals("2")) { // 취소
+					
 				} else {
-					view.showLoginFail();
+					view.wrongInput(); // 잘못 입력 시 메시지
 				}
+				
+				continue; // ← 중요! 아래 else(NoNum)로 안 내려가게
+			}
 
-			} else if (input == 2) {
-				int row = dao.join(view.showJoin());
-				view.showInfo(row, "회원가입"); // 성공/실패 출력(view)
+			if (nextX < 0 || nextX >= map.length || nextY < 0 || nextY >= map[0].length) {
+				System.out.println("맵을 넘어가면 안됩니다.");
+				continue;
 
+			}
+
+			String event = view.eventStart(map, nextX, nextY);
+
+			if (event != null) {
+				if (event.equals("상점")) {
+					handleStore(loginVO);
+				} else if (event.startsWith("FISH_")) {
+					handleFishing(loginVO, event, rd);
+				}
 			} else {
+				x = nextX;
+				y = nextY;
+			}
+
+		}
+	}
+	
+	private void handleStore(MemberVO loginVO) {
+		while (true) {
+			view.printStatus(loginVO);
+			String storeMenu = view.showStoreMenu();
+			if (storeMenu.equals("1")) {
+				// 미끼 사는거
+				butBait(loginVO);
+			} else if (storeMenu.equals("2")) {
+				// [2]낚시대 구매*****25일 6시23분
+				buyRod(loginVO);
+			} else if (storeMenu.equals("3")) {
 				break;
+			} else {
+				view.wrongInput();
+			}
+		}
+	}
+	
+	private void butBait(MemberVO loginVO) {
+		int count = view.buybait();
+
+		if (loginVO.getGold() - (25 * count) >= 0) {
+			loginVO.setBait(loginVO.getBait() + count);
+			loginVO.setGold(loginVO.getGold() - (25 * count));
+			view.bye(count);
+		} else {
+			view.NoGold();
+		}
+	}
+	
+	private void buyRod(MemberVO loginVO) {
+		view.showRodList(dao.getRodList());
+		int rod = view.buyRod();
+		RodVO rodVO = null;
+		//// 여기
+		if (rod == 1) {
+			// 대나무 낚시대
+			if (loginVO.getRodid() == 1) {
+				view.cantBuy();
+			}
+
+			else {
+				rodVO = new RodVO(1, "대나무 낚시대", 0);
+				loginVO.setRodid(rodVO.getRodid());
+				view.printBuyRod(rod);
 			}
 		}
 
+		else if (rod == 2) {
+
+			if (loginVO.getRodid() == 2) {
+				view.cantBuy();
+			}
+
+			else if (loginVO.getGold() > 1000) {
+				// 다이소 낚시대
+				loginVO.setGold(loginVO.getGold() - 1000);
+				rodVO = new RodVO(2, "다이소 낚시대", 1000);
+				loginVO.setRodid(rodVO.getRodid());
+				view.printBuyRod(rod);
+			} else {
+				view.NoGold();
+
+			}
+
+		} else if (rod == 3) {
+			if (loginVO.getRodid() == 3) {
+				view.cantBuy();
+			}
+
+			else if (loginVO.getGold() > 3000) {
+				// 카본 낚시대
+				loginVO.setGold(loginVO.getGold() - 3000);
+				rodVO = new RodVO(3, "카본 낚시대", 3000);
+				loginVO.setRodid(rodVO.getRodid());
+				view.printBuyRod(rod);
+			} else {
+
+				view.NoGold();
+			}
+
+		} else if (rod == 4) {
+
+			if (loginVO.getRodid() == 4) {
+				view.cantBuy();
+			} else if (loginVO.getGold() > 10000) {
+				// 다이아몬드 낚시대
+				loginVO.setGold(loginVO.getGold() - 10000);
+				rodVO = new RodVO(4, "다이아몬드 낚시대", 10000);
+				loginVO.setRodid(rodVO.getRodid());
+				view.printBuyRod(rod);
+			} else {
+
+				view.NoGold();
+			}
+
+		} else {
+			// 번호 잘못 입력
+			view.wrongInput();
+		}
+
+		// 미끼수가 0 이고 gold가 25보다 적을때 배드엔딩
+		int bait = loginVO.getBait();
+		int gold = loginVO.getGold();
+
+		if (bait == 0 && gold < 25) {
+			dao.initialPoint(loginVO);
+			view.showBadEnding();
+			System.exit(0);
+		}
+		
+	}
+	
+
+	private void handleFishing(MemberVO loginVO, String event, Random rd) {
+		while (true) {
+			
+			LinkedHashMap<String, Integer> fishChances = setFishChances(event);
+			
+			// 1 ~ 2
+			int weather = rd.nextInt(2) + 1;
+
+			view.showWeather(weather);
+
+			String fishingMenu = view.showFishingMenu();
+			if (fishingMenu.equals("1")) {
+				// 낚시하기
+				doFishing(loginVO, fishChances, weather);
+				
+			} else if (fishingMenu.equals("2")) {
+				// 낚시터 확률보기
+				view.getFishingSpotInfo(fishChances);
+			} else {
+				break;
+			}
+
+			int finishPoint = loginVO.getPoint();
+
+			// 2000점 이상이면 굿엔딩
+			if (finishPoint >= 2000) {
+				dao.initialPoint(loginVO);
+				view.showGoodEnding();
+				System.exit(0); // run() 메서드 종료 → 자연스럽게 프로그램 종료
+			}
+
+			// 미끼수가 0 이고 gold가 25보다 적을때 배드엔딩
+			int bait = loginVO.getBait();
+			int gold = loginVO.getGold();
+
+			if (bait == 0 && gold < 25) {
+				dao.initialPoint(loginVO);
+				view.showBadEnding();
+				System.exit(0);
+			}
+		}
 	}
 
+	private LinkedHashMap<String, Integer> setFishChances(String event) {
+		LinkedHashMap<String, Integer> fishChances = new LinkedHashMap<String, Integer>();
+		
+		int SChance = 0;
+		int MChance = 0;
+		int LChance = 0;
+		int BossChance = 0;
+
+		event = event.replace("FISH_", "");
+
+		if (event.equals("1")) {
+			SChance = 40;
+			MChance = 30;
+			LChance = 20;
+			BossChance = 10;
+		} else if (event.equals("2")) {
+			BossChance = 20;
+		} else if (event.equals("3")) {
+			MChance = 40;
+			LChance = 40;
+		}
+
+		fishChances.put("S", SChance);
+		fishChances.put("M", MChance);
+		fishChances.put("L", LChance);
+		fishChances.put("Boss", BossChance);
+		
+		return fishChances;
+	}
+	
+	private void doFishing(MemberVO loginVO, LinkedHashMap<String, Integer> fishChances, int weather) {
+		// 남은 미끼가 있는지 판단
+		if (loginVO.getBait() <= 0) {
+			view.alertBuyBait();
+			return;
+		}
+
+		boolean isHit = view.hit(loginVO);
+		if (isHit) {
+			HashMap<String, String> hm = view.fishing(weather, fishChances);
+
+			String fishSizeName = hm.get("물고기크기");
+			String isSuccess = hm.get("성공실패");
+			int gold = 0;
+			int point = 0;
+
+			if (isSuccess.equals("success")) {
+				if (fishSizeName.equals("S")) {
+					gold = 100;
+					point = 10;
+
+				} else if (fishSizeName.equals("M")) {
+					gold = 120;
+					point = 25;
+				} else if (fishSizeName.equals("L")) {
+					gold = 150;
+					point = 60;
+				} else {
+					gold = 5000;
+					point = 500;
+				}
+				view.fishingSuccess(fishSizeName);
+				loginVO.setGold(loginVO.getGold() + gold);
+				loginVO.setPoint(loginVO.getPoint() + point);
+				loginVO.setBait(loginVO.getBait() - 1);
+			} else {
+				loginVO.setBait(loginVO.getBait() - 1);
+				view.fishingFail(fishSizeName);
+			}
+			view.showFishingStatus(loginVO);
+		} else {
+			view.hitFail();
+			loginVO.setBait(loginVO.getBait() - 1);
+		}
+		
+	}
+	
 }
