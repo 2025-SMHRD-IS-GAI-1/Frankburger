@@ -40,8 +40,7 @@ public class Controller {
 	// 미끼 : 10개 , 포인트 : 10점, 보유금액 : 100원, 낚시대 : 대나무낚시대
 	public void run() {
 
-		String[][] map = { 
-				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
+		String[][] map = { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", "FISH_1", " ", " ", " ", " ", " " },
 				{ " ", " ", " ", " ", " ", " ", " ", " ", " ", " " },
@@ -66,7 +65,9 @@ public class Controller {
 				if (loginVO != null) {
 					view.statusLogin(loginVO);
 
-					while (true) {
+					boolean inGame = true;
+
+					while (inGame) {
 						// 1. 뷰에게 현재 맵 상태를 출력하라고 요청
 						view.printMap(map, x, y);
 
@@ -92,11 +93,24 @@ public class Controller {
 						} else if (dir.equals("2")) { // 저장
 							dao.Save(loginVO);
 							continue;
-						} else if (dir.equals("4")) { // 종료
-							break;
-						} else {
-							view.NoNum();
-							continue;
+						} else if (dir.equals("3")) { // 게임 종료 선택
+							view.RealQuitMsg(); // 메시지 출력
+							boolean validInput = false;
+
+							while (!validInput) {
+								int num = sc.nextInt(); // 사용자 입력 받기
+
+								if (num == 1) { // 종료
+									view.Real();
+									inGame = false; // 게임 루프 종료
+									validInput = true;
+								} else if (num == 2) { // 취소
+									validInput = true; // 게임 계속
+								} else {
+									view.NoNum(); // 잘못 입력 시 메시지
+								}
+							}
+							continue; // ← 중요! 아래 else(NoNum)로 안 내려가게
 						}
 
 						if (nextX < 0 || nextX >= map.length || nextY < 0 || nextY >= map[0].length) {
@@ -197,12 +211,12 @@ public class Controller {
 											// 번호 잘못 입력
 
 										}
-										
+
 										// 미끼수가 0 이고 gold가 25보다 적을때 배드엔딩
 										int bait = loginVO.getBait();
 										int gold = loginVO.getGold();
-										
-										if(bait == 0 && gold < 25) {
+
+										if (bait == 0 && gold < 25) {
 											dao.initialPoint(loginVO);
 											view.showBadEnding();
 											return;
@@ -217,38 +231,37 @@ public class Controller {
 								}
 							} else if (event.startsWith("FISH_")) {
 								while (true) {
-									
+
 									LinkedHashMap<String, Integer> fishChances = new LinkedHashMap<>();
 									int SChance = 0;
 									int MChance = 0;
 									int LChance = 0;
 									int BossChance = 0;
-									
+
 									event = event.replace("FISH_", "");
-									
-									if(event.equals("1")) {
+
+									if (event.equals("1")) {
 										SChance = 40;
 										MChance = 30;
 										LChance = 20;
 										BossChance = 10;
-									} else if(event.equals("2")) {
+									} else if (event.equals("2")) {
 										BossChance = 20;
-									} else if(event.equals("3")) {
+									} else if (event.equals("3")) {
 										MChance = 40;
 										LChance = 40;
 									}
-									
+
 									fishChances.put("S", SChance);
 									fishChances.put("M", MChance);
 									fishChances.put("L", LChance);
 									fishChances.put("Boss", BossChance);
-									
-									
+
 									// 1 ~ 2
 									int weather = rd.nextInt(2) + 1;
 
 									view.showWeather(weather);
-									
+
 									int menu4 = view.showFishingMenu();
 									if (menu4 == 1) {
 										// 낚시하기
@@ -269,14 +282,14 @@ public class Controller {
 											int point = 0;
 
 											if (isSuccess.equals("success")) {
-												if (fishSizeName.equals("2짜")) {
+												if (fishSizeName.equals("S")) {
 													gold = 100;
 													point = 10;
 
-												} else if (fishSizeName.equals("3짜")) {
+												} else if (fishSizeName.equals("M")) {
 													gold = 120;
 													point = 25;
-												} else if (fishSizeName.equals("4짜")) {
+												} else if (fishSizeName.equals("L")) {
 													gold = 150;
 													point = 60;
 												} else {

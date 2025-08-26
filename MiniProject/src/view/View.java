@@ -20,25 +20,38 @@ public class View {
 	// 2. 메서드
 	// 메뉴 보여주는 메서드
 	public int showMenu() {
-		System.out.print("[1]로그인 [2]회원가입 [3]종료 >>");
+		System.out.println();
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("       	    🐟 BASS FISHING GAME 🐟");
+		System.out.println("════════════════════════════════════════════════");
+		System.out.println("           ╭─────╮   ╭─────╮   ╭─────╮");
+		System.out.println("           │  1️  │   │  2️  │   │  3  │");
+		System.out.println("           ╰─────╯   ╰─────╯   ╰─────╯");
+		System.out.println("            로그인     회원가입     종료");
+		System.out.println();
+		//System.out.println("════════════════════════════════════════════════");
+		System.out.println("              🎣 번호를 입력해주세요 !🎣");
+		System.out.print("                        ");
 		int input = sc.nextInt();
+//		System.out.println();
+//		System.out.println("        🐠      🐟      🐡      🐟      🐠");
 		return input;
 	}
 
 	public String showMapMenu() {
-		System.out.print("[w] 상 [s] 하 [a] 좌 [d] 우 [1]현재상태 [2]저장 [4]종료 >>");
+		System.out.print("[w] 상 [s] 하 [a] 좌 [d] 우 [1]현재상태 [2]저장 [3]종료 >>");
 		String input = sc.next();
 		return input;
 	}
 
 	public int showStoreMenu() {
-		System.out.print("[1]미끼구매 25Gold [2]낚시대구매 [3]종료 >>");
+		System.out.print("[1]미끼구매 (25G) [2]낚시대구매 [3]나가기 >>");
 		int input = sc.nextInt();
 		return input;
 	}
 
 	public int showFishingMenu() {
-		System.out.print("[1]낚시하기 [2]확률보기 [3]종료 >>");
+		System.out.print("[1]낚시하기 [2]확률보기 [3]나가기 >>");
 		int input = sc.nextInt();
 		return input;
 	}
@@ -56,6 +69,7 @@ public class View {
 		return mvo; // Controller → DAO로 전달
 
 	}
+	
 
 	// 로그인 성공 여부 출력하는 메서드
 	public void statusLogin(MemberVO loginVO) {
@@ -71,6 +85,7 @@ public class View {
 
 	// 회원가입 출력하는 메서드
 	public MemberVO showJoin() {
+		
 		System.out.println("==== 회원가입 ====");
 		System.out.print("ID 입력 : ");
 		String id = sc.next();
@@ -137,6 +152,18 @@ public class View {
 			rodName = "다이아몬드 낚시대";
 		}
 		System.out.println("  낚시대 : " + rodName);
+	}
+
+	public void RealQuitMsg() {
+		System.out.println();
+		System.out.println("정말 나가시겠습니까?");
+		System.out.println("저장되지 않은 데이터는 삭제됩니다.");
+		System.out.println("[1]종료 [2]취소");
+	}
+
+	// 정말 나가시겠습니까?
+	public void Real() {
+		System.out.println("게임을 종료하고 로그인 화면으로 돌아갑니다.");
 	}
 
 	// 미끼 사기 출력
@@ -328,12 +355,12 @@ public class View {
 		int MChance = fishChances.get("M");
 		int LChance = fishChances.get("L");
 		int BossChance = fishChances.get("Boss");
-		String isSuccess = null;
+		String isSuccess = "fail";
 
 		// 1 ~ 100 사이 랜덤 뽑기
 		int rand = rd.nextInt(100) + 1;
 
-		String fishSizeName = null;
+		String fishSizeName = "default";
 		int cumulative = 0;
 
 		for (Entry<String, Integer> entry : fishChances.entrySet()) {
@@ -350,10 +377,8 @@ public class View {
 		int hitRatio = 0;
 
 		if (weather == 1)// 날씨 맑을 때 {
-			
-			if(fishSizeName == null) {
-				isSuccess = "fail";
-			} else if (fishSizeName.equals("S")) {
+
+			if (fishSizeName.equals("S")) {
 				// 100%
 				isSuccess = "success";
 			} else if (fishSizeName.equals("M")) {
@@ -372,7 +397,7 @@ public class View {
 				} else {
 					isSuccess = "fail";
 				}
-			} else if(fishSizeName.equals("Boss")) {
+			} else if (fishSizeName.equals("Boss")) {
 				// 10%
 				hitRatio = rd.nextInt(10) + 1;
 				if (hitRatio == 1) {
@@ -380,13 +405,13 @@ public class View {
 				} else {
 					isSuccess = "fail";
 				}
+			} else {
+				isSuccess = "fail";
 			}
 
 		else { // weather==2 (폭우)
-			
-			if(fishSizeName == null) {
-				isSuccess = "fail";
-			} else if (fishSizeName.equals("S")) {
+
+			if (fishSizeName.equals("S")) {
 				// 80%
 				hitRatio = rd.nextInt(10) + 1;
 				if (hitRatio <= 8) {
@@ -411,7 +436,7 @@ public class View {
 				} else {
 					isSuccess = "fail";
 				}
-			} else if(fishSizeName.equals("Boss")) {
+			} else if (fishSizeName.equals("Boss")) {
 				// 8%
 				hitRatio = rd.nextInt(100) + 1;
 				if (hitRatio <= 8) {
@@ -419,6 +444,8 @@ public class View {
 				} else {
 					isSuccess = "fail";
 				}
+			} else {
+				isSuccess = "fail";
 			}
 		}
 
