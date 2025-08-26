@@ -269,14 +269,14 @@ public class Controller {
 											int point = 0;
 
 											if (isSuccess.equals("success")) {
-												if (fishSizeName.equals("2짜")) {
+												if (fishSizeName.equals("S")) {
 													gold = 100;
 													point = 10;
 
-												} else if (fishSizeName.equals("3짜")) {
+												} else if (fishSizeName.equals("M")) {
 													gold = 120;
 													point = 25;
-												} else if (fishSizeName.equals("4짜")) {
+												} else if (fishSizeName.equals("L")) {
 													gold = 150;
 													point = 60;
 												} else {

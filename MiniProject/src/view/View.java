@@ -328,12 +328,12 @@ public class View {
 		int MChance = fishChances.get("M");
 		int LChance = fishChances.get("L");
 		int BossChance = fishChances.get("Boss");
-		String isSuccess = null;
+		String isSuccess = "fail";
 
 		// 1 ~ 100 사이 랜덤 뽑기
 		int rand = rd.nextInt(100) + 1;
 
-		String fishSizeName = null;
+		String fishSizeName = "default";
 		int cumulative = 0;
 
 		for (Entry<String, Integer> entry : fishChances.entrySet()) {
@@ -351,9 +351,7 @@ public class View {
 
 		if (weather == 1)// 날씨 맑을 때 {
 			
-			if(fishSizeName == null) {
-				isSuccess = "fail";
-			} else if (fishSizeName.equals("S")) {
+			if (fishSizeName.equals("S")) {
 				// 100%
 				isSuccess = "success";
 			} else if (fishSizeName.equals("M")) {
@@ -380,13 +378,13 @@ public class View {
 				} else {
 					isSuccess = "fail";
 				}
+			} else {
+				isSuccess ="fail";
 			}
 
 		else { // weather==2 (폭우)
 			
-			if(fishSizeName == null) {
-				isSuccess = "fail";
-			} else if (fishSizeName.equals("S")) {
+			if (fishSizeName.equals("S")) {
 				// 80%
 				hitRatio = rd.nextInt(10) + 1;
 				if (hitRatio <= 8) {
@@ -419,6 +417,8 @@ public class View {
 				} else {
 					isSuccess = "fail";
 				}
+			} else {
+				isSuccess = "fail";
 			}
 		}
 
