@@ -358,62 +358,18 @@ public class View {
 		return isHit;
 	}
 
-	public HashMap<String, String> fishing(int weather, LinkedHashMap<String, Integer> fishChances) {
+	public HashMap<String, String> fishing(String sizeName, String flag) {
 		HashMap<String, String> map = new HashMap<String, String>();
 
-		Random rd = new Random();
+		map.put("물고기크기", sizeName);
 
-		int SChance = fishChances.get("S");
-		int MChance = fishChances.get("M");
-		int LChance = fishChances.get("L");
-		int BossChance = fishChances.get("Boss");
-		String isSuccess = "fail";
-
-		// 1 ~ 100 사이 랜덤 뽑기
-		int rand = rd.nextInt(100) + 1;
-
-		String fishSizeName = "꽝";
-		int cumulative = 0;
-
-		for (Entry<String, Integer> entry : fishChances.entrySet()) {
-			cumulative += entry.getValue();
-			if (rand <= cumulative) {
-				fishSizeName = entry.getKey();
-				break;
-			}
-		}
-
-		map.put("물고기크기", fishSizeName);
-
-		// 기본 확률표 (맑은 날 기준)
-		HashMap<String, Integer> baseProb = new HashMap<>();
-		baseProb.put("S", 100);
-		baseProb.put("M", 50);
-		baseProb.put("L", 25);
-		baseProb.put("Boss", 10);
-
-		// 날씨에 따라 확률 조정
-		double weatherFactor = (weather == 1) ? 1.0 : 0.8; // 맑음=1.0, 폭우=0.8
-
-		if (!fishSizeName.equals("꽝")) {
-			Integer chance = baseProb.get(fishSizeName);
-
-			if (chance != null) {
-				int adjustedChance = (int) Math.round(chance * weatherFactor);
-				int roll = rd.nextInt(100) + 1; // 1~100
-				if (roll <= adjustedChance) {
-					isSuccess = "success";
-				}
-			}
-		}
-
-		if (isSuccess.equals("success")) {
-			System.out.println("\n🎉 " + fishSizeName + " 낚시 성공!");
+		if (flag.equals("success")) {
+			System.out.println("\n🎉 " + sizeName + " 낚시 성공!");
 		} else {
-			System.out.println("\n💀 " + fishSizeName + " 낚시 실패!");
+			System.out.println("\n💀 " + sizeName + " 낚시 실패!");
 		}
 
-		map.put("성공실패", isSuccess);
+		map.put("성공실패", flag);
 
 		return map;
 	}
@@ -480,6 +436,84 @@ public class View {
 	public void wrongInput() {
 		System.out.println("잘못 입력하셨습니다. 다시 입력해 주세요.");
 		
+	}
+
+	public boolean hit(int length) {
+		boolean isHit = false;
+
+		int barLength = 30; // 바 길이
+		int targetStart = 0; // 성공 구간 시작
+		int targetEnd = length; // 성공 구간 끝
+		int middlePoint = barLength / 2;
+		boolean forward = true;
+
+		while (true) {
+			// 바 그리기
+
+			StringBuilder sb = new StringBuilder("=== 엔터 입력으로 타이밍 맞추기 ===");
+			sb.append("\n");
+			for (int i = 0; i < barLength; i++) {
+				if (i == middlePoint)
+					sb.append("↓");
+				else
+					sb.append(" ");
+			}
+			sb.append("\n");
+
+			sb.append("[");
+			for (int i = 0; i < barLength; i++) {
+				if (i >= targetStart && i <= targetEnd)
+					sb.append("=");
+				else
+					sb.append(" ");
+			}
+			sb.append("]");
+
+			System.out.println("\r" + sb);
+
+			// 방향 전환
+			if (forward) {
+				targetStart++;
+				targetEnd++;
+			} else {
+				targetStart--;
+				targetEnd--;
+			}
+
+			if (targetEnd == barLength - 1) {
+				forward = false;
+			}
+
+			if (targetStart == 0) {
+				forward = true;
+			}
+
+			try {
+				// 움직임 속도
+				Thread.sleep(80);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			// 입력 감지 (간단히 Enter로 처리)
+			try {
+				if (System.in.available() > 0) { // 키 입력 대기 확인
+					String input = sc.nextLine();
+					if (middlePoint >= targetStart && middlePoint <= targetEnd) {
+						System.out.println("\n🎉 찌 맞추기 성공!");
+						isHit = true;
+					} else {
+						System.out.println("\n💀 찌 맞추기 실패!");
+						isHit = false;
+					}
+					break;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return isHit;
 	}
 
 }
