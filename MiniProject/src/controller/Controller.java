@@ -143,7 +143,7 @@ public class Controller {
 			String storeMenu = view.showStoreMenu();
 			if (storeMenu.equals("1")) {
 				// 미끼 사는거
-				butBait(loginVO);
+				buyBait(loginVO);
 			} else if (storeMenu.equals("2")) {
 				// [2]낚시대 구매
 				buyRod(loginVO);
@@ -155,7 +155,7 @@ public class Controller {
 		}
 	}
 
-	private void butBait(MemberVO loginVO) {
+	private void buyBait(MemberVO loginVO) {
 		int count = view.buybait();
 
 		if (loginVO.getGold() - (25 * count) >= 0) {
