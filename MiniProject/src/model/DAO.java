@@ -127,13 +127,12 @@ public class DAO {
 
 			conn.commit();
 
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			getClose();
 		}
-		
+
 		return row;
 
 	}

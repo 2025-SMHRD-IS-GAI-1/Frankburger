@@ -34,7 +34,7 @@ public class Controller {
 				handleLogin();
 			} else if (menu.equals("2")) {
 				int row = dao.join(view.showJoin());
-				view.showInfo(row, "회원가입"); // 성공/실패 출력(view)
+				view.showInfo(row); // 성공/실패 출력(view)
 			} else if (menu.equals("3")) {
 				break;
 			} else {
@@ -94,7 +94,7 @@ public class Controller {
 				view.printStatus(loginVO);
 			} else if (dir.equals("2")) { // 저장
 				int v = dao.save(loginVO);
-				if(v == 1) {
+				if (v == 1) {
 					view.saveDB();
 				} else {
 					view.nsaveDB();
@@ -277,7 +277,7 @@ public class Controller {
 			isBadEnding(loginVO);
 		}
 	}
-	
+
 	private void isBadEnding(MemberVO loginVO) {
 		int bait = loginVO.getBait();
 		int gold = loginVO.getGold();
@@ -318,17 +318,17 @@ public class Controller {
 
 		return fishChances;
 	}
-	
+
 	private void doHit(MemberVO loginVO, LinkedHashMap<String, Integer> fishChances, int weather) {
 		// 남은 미끼가 있는지 판단
 		if (loginVO.getBait() <= 0) {
 			view.alertBuyBait();
 			return;
 		}
-		
+
 		int rodId = loginVO.getRodid();
 		int length = 4;
-		
+
 		if (rodId == 1) {
 			length = 4;
 		} else if (rodId == 2) {
@@ -340,14 +340,14 @@ public class Controller {
 		}
 
 		boolean isHit = view.hit(length);
-		
+
 		if (isHit) {
 			doFishing(loginVO, fishChances, weather);
 		} else {
 			view.hitFail();
 			loginVO.setBait(loginVO.getBait() - 1);
 		}
-		
+
 	}
 
 	private void doFishing(MemberVO loginVO, LinkedHashMap<String, Integer> fishChances, int weather) {
@@ -372,7 +372,7 @@ public class Controller {
 				break;
 			}
 		}
-		
+
 		// 기본 확률표 (맑은 날 기준)
 		HashMap<String, Integer> baseProb = new HashMap<>();
 		baseProb.put("S", 100);
@@ -394,7 +394,7 @@ public class Controller {
 				}
 			}
 		}
-		
+
 		int gold = 0;
 		int point = 0;
 
@@ -422,7 +422,7 @@ public class Controller {
 			view.fishingFail(fishSizeName);
 		}
 		view.showFishingStatus(loginVO);
-		
+
 	}
 
 }
