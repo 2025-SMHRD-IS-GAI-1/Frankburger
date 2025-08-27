@@ -176,4 +176,4 @@
 </br>
 
 ## 6. 회고 / 느낀점
->프로젝트 개발 회고 글: https://zuminternet.github.io/ZUM-Pilot-integer/
+>프로젝트 개발 회고 글: [https://zuminternet.github.io/ZUM-Pilot-integer/](https://www.notion.so/sdtunit032526/6-KPT-256ae0eec9558112bb09c5aec09f1909)
