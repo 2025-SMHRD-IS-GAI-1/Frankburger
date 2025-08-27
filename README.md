@@ -10,7 +10,7 @@
 
 ## 2. 사용 기술
 #### `Back-end`
-  - Java 8
+  - Java 11
   - Oracle
   - JDBC
 
