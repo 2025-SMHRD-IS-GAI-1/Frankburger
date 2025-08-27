@@ -344,7 +344,6 @@ public class Controller {
 		if (isHit) {
 			doFishing(loginVO, fishChances, weather);
 		} else {
-			view.hitFail();
 			loginVO.setBait(loginVO.getBait() - 1);
 		}
 
