@@ -339,22 +339,11 @@ public class View {
 
 	public String showFishingMenu() {
 
-		System.out.println("                                ~               ~");
-		System.out.println("        🐠          .                o           ");
-		System.out.println("           ~                 .                   ");
-		System.out.println("   o                .          ~              .  ");
-		System.out.println("           .                                      ");
-		System.out.println("           .          ~                 o       ");
-		System.out.println("   .                        ~        .           ");
-		System.out.println("           o               .              ~   ");
-		System.out.println("   .           ~                      .        ");
-		System.out.println("          ~                 .              ~      ");
-		System.out.println("   .                    o                       ");
 		System.out.println("           .              .     🐡     ~       o  ");
 		System.out.println("     ~              .   .                         ");
 		System.out.println("          . o                                  ");
 		System.out.println("   .   🐙             .          ~           .   ");
-		System.out.println("                 🐟             o                ~ ");
+		System.out.println("                 🐟             o             ~ ");
 		System.out.println("                                              ");
 		System.out.println("════════════════════════════════════════════════");
 		System.out.println(" 	           🎣 낚시터 🎣");
@@ -461,7 +450,7 @@ public class View {
 	}
 
 	public void fishingSuccess(String fishSizeName) {
-		System.out.println("          " + fishSizeName + " 낚시에 성공하셨습니다.");
+		System.out.println("                " + fishSizeName + " 낚시에 성공하셨습니다.");
 		System.out.println();
 
 	}
@@ -469,8 +458,8 @@ public class View {
 	// 낚시 실패
 	public void fishingFail(String fishName) {
 		System.out.println("════════════════════════════════════════════════");
-		System.out.println("           💀 " + fishName + " 낚시에 실패했습니다! 💀");
-		System.out.println("         물고기가 도망갔어요… 다시 해봅시다! 🎣");
+		System.out.println("              💀 " + fishName + " 낚시에 실패했습니다! 💀");
+		System.out.println("          물고기가 도망갔어요… 다시 해봅시다! 🎣");
 		System.out.println("════════════════════════════════════════════════");
 	}
 
@@ -580,7 +569,6 @@ public class View {
 					if (middlePoint >= targetStart && middlePoint <= targetEnd) {
 						System.out.println("════════════════════════════════════════════════");
 						System.out.println("                 🐟 찌 맞추기 성공!🐟");
-						System.out.println("════════════════════════════════════════════════");
 						isHit = true;
 					} else {
 						System.out.println("════════════════════════════════════════════════");
@@ -675,10 +663,8 @@ public class View {
 
 	// 낚시후 상태 보여주기
 	public void showFishingStatus(MemberVO mvo) {
-		System.out.println("                       획 득!");
-		System.out.println();
-		System.out
-				.println("           소지금 : " + mvo.getGold() + ", 점수 : " + mvo.getPoint() + ", 미끼 : " + mvo.getBait());
+		System.out.println("                     현재 상태 ");
+		System.out.println("           소지금 : " + mvo.getGold() + ", 점수 : " + mvo.getPoint() + ", 미끼 : " + mvo.getBait());
 	}
 
 	public void wrongInput() {
