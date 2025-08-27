@@ -2,10 +2,7 @@ package view;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-import java.util.Random;
 import java.util.Scanner;
 
 import model.MemberVO;
@@ -128,28 +125,15 @@ public class View {
 			System.out.println("  🐠=~                                🐡.·˖*·⑅♡");
 			System.out.println("            ◁:0€             🐟~-  ");
 			System.out.println("════════════════════════════════════════════════");
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
-			System.out.println();
+			System.out.println("                  <  게임 설명  >");
+			System.out.println("오늘의 주인공 홍길동(29세,여친없음) 배스왕이 되면 여자친구를 사귈 수 있겠지?");
+			System.out.println("오늘도 열심히 낚시를 해보자!!");
+			System.out.println("낚시터 : 🎣");
+			System.out.println("상점 : 🏪");
+			System.out.println("point 2000점 획득시 배스왕이 될 수 있습니다 ");
+			System.out.println("(미끼와 돈이 모두 없으면 배드앤딩으로 종료됩니다)");
+			System.out.println("tip: 낚시터마다 출현하는 배스크기와 확률이 다르므로");
+			System.out.println("낚시터 확률을 꼭 확인하세요!");
 			System.out.println();
 
 		} else {
